@@ -1,0 +1,64 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model UserProfile {
+  id               String          @id @default(cuid())
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+  preferencesJson  String          // JSON string
+  primaryNiche     String          @default("tech")
+  nicheKeywords    String          // JSON array as string
+  avoidKeywords    String          // JSON array as string
+  noFace           Boolean         @default(false)
+  effortLevel      String          @default("med") // "low" | "med" | "high"
+  region           String?
+  snapshots        TrendSnapshot[]
+}
+
+model TrendSnapshot {
+  id            String        @id @default(cuid())
+  createdAt     DateTime      @default(now()) // fetchedAt
+  source        String        @default("apify")
+  videoCount    Int
+  hashtagCount  Int
+  userProfileId String?
+  userProfile   UserProfile?  @relation(fields: [userProfileId], references: [id], onDelete: Cascade)
+  videos        TrendVideo[]
+  hashtags      TrendHashtag[]
+}
+
+model TrendVideo {
+  id               String        @id @default(cuid())
+  snapshotId       String
+  snapshot         TrendSnapshot @relation(fields: [snapshotId], references: [id], onDelete: Cascade)
+  url              String
+  caption          String?
+  hashtags         String        // JSON array as string
+  authorName       String?
+  authorId         String?
+  views            Int?
+  likes            Int?
+  comments         Int?
+  shares           Int?
+  createdAtSource  DateTime?
+  rawJson          String        // JSON as string
+}
+
+model TrendHashtag {
+  id        String        @id @default(cuid())
+  snapshotId String
+  snapshot  TrendSnapshot @relation(fields: [snapshotId], references: [id], onDelete: Cascade)
+  hashtag   String
+  rank      Int?
+  views     Int?
+  rawJson   String        // JSON as string
+}
