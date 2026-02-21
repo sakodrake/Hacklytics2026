@@ -16,7 +16,7 @@ export default function Home() {
 
         {/* Center block: logo + CTA */}
         <div className="text-center max-w-xl mx-auto animate-fade-in">
-          <h1 className={`landing-logo ${syne.className} text-5xl sm:text-6xl md:text-7xl font-bold tracking-tight text-white drop-shadow-lg`}>
+          <h1 className={`${syne.className} text-5xl sm:text-6xl md:text-7xl font-bold tracking-tight text-white drop-shadow-lg`}>
             TrendSpinoff
           </h1>
           <p className="mt-4 text-lg sm:text-xl text-white/90 font-medium">
