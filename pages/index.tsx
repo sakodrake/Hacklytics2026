@@ -11,8 +11,18 @@ export default function Home() {
         <title>TrendSpinoff — TikTok trend analytics & spinoff ideas</title>
       </Head>
       <div className="landing min-h-screen flex flex-col items-center justify-center relative overflow-hidden px-6">
-        {/* Animated gradient background */}
-        <div className="landing-bg absolute inset-0 -z-10" aria-hidden />
+        {/* Video background */}
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="absolute inset-0 -z-10 w-full h-full object-cover"
+          aria-hidden
+        >
+          <source src="/landing-bg.mp4" type="video/mp4" />
+        </video>
+        <div className="absolute inset-0 -z-10 bg-black/50" aria-hidden />
 
         {/* Center block: logo + CTA */}
         <div className="text-center max-w-xl mx-auto animate-fade-in">
