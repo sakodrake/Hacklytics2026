@@ -20,6 +20,7 @@ model UserProfile {
   avoidKeywords    String          // JSON array as string
   noFace           Boolean         @default(false)
   effortLevel      String          @default("med") // "low" | "med" | "high"
+  videoLength      Int             @default(30)
   region           String?
   snapshots        TrendSnapshot[]
 }

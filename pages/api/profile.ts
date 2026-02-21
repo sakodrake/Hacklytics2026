@@ -9,6 +9,7 @@ interface ProfileRequest {
   style?: string[];
   noFace?: boolean;
   effortLevel?: string;
+  videoLength?: number
 }
 
 interface GeminiResponse {
@@ -41,6 +42,7 @@ User Preferences:
 - Style: ${style}
 - No-Face Videos: ${preferences.noFace ? 'Yes' : 'No'}
 - Effort Level: ${preferences.effortLevel || 'medium'}
+- Target Video Length: ${preferences.videoLength || 30} seconds
 
 Generate a JSON object with ONLY these fields (no markdown, no explanation):
 {
@@ -113,6 +115,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         avoidKeywords: JSON.stringify(geminiResponse.avoidKeywords),
         noFace: body.noFace || false,
         effortLevel: body.effortLevel || 'med',
+        videoLength: body.videoLength || 30,
         region: body.primaryNiche === 'tech' ? 'US' : undefined
       }
     });

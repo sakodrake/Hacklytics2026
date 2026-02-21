@@ -9,13 +9,17 @@ const NICHES = ['Tech', 'Fitness', 'Study', 'Fashion', 'Food']
 const EFFORT_LEVELS = ['low', 'med', 'high']
 const STYLES = ['Educational', 'Storytelling', 'Memes', 'Cinematic', 'Talking-head']
 
+
 export default function Onboarding() {
   const [primaryNiche, setPrimaryNiche] = useState('Tech')
+  const [customPrimary, setCustomPrimary] = useState('')
   const [interests, setInterests] = useState<string[]>(['Tech'])
+  const [newInterest, setNewInterest] = useState('')
   const [goals, setGoals] = useState<string[]>(['engagement'])
-  const [style, setStyle] = useState('educational')
+  const [style, setStyle] = useState(STYLES[0])
   const [noFace, setNoFace] = useState(true)
   const [effortLevel, setEffortLevel] = useState('med')
+  const [videoLength, setVideoLength] = useState('30')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const router = useRouter()
@@ -24,20 +28,39 @@ export default function Onboarding() {
     setInterests(prev => (prev.includes(n) ? prev.filter(x => x !== n) : [...prev, n]))
   }
 
+  function addInterest() {
+    const v = newInterest.trim()
+    if (!v) return
+    if (!interests.includes(v)) {
+      setInterests(prev => [...prev, v])
+    }
+    setNewInterest('')
+  }
+
+  function onInterestKey(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.key === 'Enter') {
+      e.preventDefault()
+      addInterest()
+    }
+  }
+
   async function save() {
     setLoading(true)
     setError('')
     try {
+      const primaryToSave = primaryNiche === 'Other' ? (customPrimary.trim() || '') : primaryNiche
+
       const response = await fetch('/api/profile', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          primaryNiche,
+          primaryNiche: primaryToSave,
           interests,
           goals,
           style: [style],
           noFace,
-          effortLevel
+          effortLevel,
+          videoLength
         })
       })
 
@@ -49,11 +72,12 @@ export default function Onboarding() {
       const { profileId } = await response.json()
       localStorage.setItem('trendspinoff_profileId', profileId)
       localStorage.setItem('trendspinoff_profile', JSON.stringify({
-        primaryNiche,
+        primaryNiche: primaryToSave,
         interests,
         goals,
         noFace,
-        effortLevel
+        effortLevel,
+        videoLength
       }))
       router.push('/feed')
     } catch (err) {
@@ -94,7 +118,7 @@ export default function Onboarding() {
                 {NICHES.map(n => (
                   <button
                     key={n}
-                    onClick={() => setPrimaryNiche(n)}
+                    onClick={() => { setPrimaryNiche(n); setCustomPrimary('') }}
                     className={`px-4 py-2 rounded-xl font-medium transition ${
                       primaryNiche === n
                         ? 'bg-slate-800 text-white shadow'
@@ -104,12 +128,35 @@ export default function Onboarding() {
                     {n}
                   </button>
                 ))}
+
+                <button
+                  onClick={() => setPrimaryNiche('Other')}
+                  className={`px-4 py-2 rounded-xl font-medium transition ${
+                    primaryNiche === 'Other'
+                      ? 'bg-slate-800 text-white shadow'
+                      : 'bg-slate-200 text-slate-700 hover:bg-slate-300'
+                  }`}
+                >
+                  Other
+                </button>
               </div>
+
+              {primaryNiche === 'Other' && (
+                <div className="mt-3">
+                  <input
+                    type="text"
+                    value={customPrimary}
+                    onChange={e => setCustomPrimary(e.target.value)}
+                    placeholder="Enter your niche (e.g. 'SaaS', 'Parenting')"
+                    className="w-full p-3 bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-400 text-slate-800"
+                  />
+                </div>
+              )}
             </div>
 
             <div>
               <label className="label block mb-3">Interests (select all that apply)</label>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-2 mb-3">
                 {NICHES.map(n => (
                   <button
                     key={n}
@@ -123,6 +170,33 @@ export default function Onboarding() {
                     {n}
                   </button>
                 ))}
+
+                {interests.filter(i => !NICHES.includes(i)).map(ci => (
+                  <button
+                    key={ci}
+                    onClick={() => toggleInterest(ci)}
+                    className="px-3 py-2 rounded-xl text-sm font-medium transition bg-slate-700 text-white"
+                  >
+                    {ci}
+                  </button>
+                ))}
+              </div>
+
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={newInterest}
+                  onChange={e => setNewInterest(e.target.value)}
+                  onKeyDown={onInterestKey}
+                  placeholder="Add another interest and press Enter"
+                  className="flex-1 p-3 bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-400 text-slate-800"
+                />
+                <button
+                  onClick={addInterest}
+                  className="px-4 py-2 rounded-xl bg-slate-800 text-white"
+                >
+                  Add
+                </button>
               </div>
             </div>
 
@@ -163,6 +237,18 @@ export default function Onboarding() {
                 <option value="med">Medium (some editing, planning)</option>
                 <option value="high">High (production-level content)</option>
               </select>
+            </div>
+
+            <div>
+              <label className="label block mb-3">
+                Preferred Video Length (seconds)
+              </label>
+              <input
+                type="number"
+                value={videoLength}
+                onChange={e => setVideoLength(e.target.value)}
+                className="w-full p-3 bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-400 text-slate-800"
+              />
             </div>
 
             <button
