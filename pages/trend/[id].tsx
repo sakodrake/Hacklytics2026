@@ -191,5 +191,6 @@ export default function TrendDetail(){
         </div>
       </div>
     </div>
+    </div>
   )
 }
