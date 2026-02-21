@@ -1,4 +1,4 @@
-# TrendSpinoff — Demo
+# Viralytics
 
 Minimal Next.js + Tailwind demo for the Hacklytics2026 prototype.
 
