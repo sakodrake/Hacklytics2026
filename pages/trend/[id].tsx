@@ -51,26 +51,36 @@ export default function TrendDetail(){
     }
   }
 
-  if (isLoading) return <div className="p-6 text-center">Loading trend...</div>
-  if (error || !trend) return <div className="p-6 text-center text-red-600">Trend not found</div>
+  if (isLoading) return (
+    <div className="min-h-screen app-bg flex items-center justify-center">
+      <p className="page-subtitle">Loading trend...</p>
+    </div>
+  )
+  if (error || !trend) return (
+    <div className="min-h-screen app-bg flex items-center justify-center p-6">
+      <p className="text-red-300">Trend not found</p>
+    </div>
+  )
 
   const scores = trend.scores || { match: 0, velocity: 0, replicability: 0, final: 0 }
   const reasons = trend.reasons || { matchReasons: [], replicabilityReasons: [] }
 
   return (
-    <div className="min-h-screen p-4 md:p-6 bg-gradient-to-br from-slate-50 to-slate-100">
-      <div className="max-w-3xl mx-auto">
-        <button
-          onClick={() => router.back()}
-          className="mb-4 text-blue-600 hover:text-blue-800 font-medium"
-        >
-          ← Back
-        </button>
+    <div className="min-h-screen relative overflow-hidden">
+      <div className="app-bg absolute inset-0 -z-10" aria-hidden />
+      <div className="relative min-h-screen p-4 md:p-6">
+        <div className="max-w-3xl mx-auto">
+          <button
+            onClick={() => router.back()}
+            className="mb-6 link-muted hover:text-white font-medium transition-colors"
+          >
+            ← Back
+          </button>
 
-        <div className="bg-white rounded-lg shadow-lg p-6 md:p-8">
+          <div className="app-card p-6 md:p-8">
           {/* Campaign Info */}
           <div className="mb-6">
-            <p className="text-sm text-slate-500 line-clamp-3 mb-3">
+            <p className="text-sm text-slate-600 line-clamp-3 mb-3">
               {trend.caption || 'No caption available'}
             </p>
             
@@ -150,7 +160,7 @@ export default function TrendDetail(){
             <button
               onClick={generateSpinoffs}
               disabled={spinoffLoading}
-              className="w-full px-6 py-3 bg-green-600 hover:bg-green-700 disabled:bg-slate-400 text-white font-semibold rounded-lg transition"
+              className="btn-primary w-full px-6 py-4 text-lg"
             >
               {spinoffLoading ? 'Generating...' : '✨ Generate My Spinoff Ideas'}
             </button>
@@ -168,7 +178,7 @@ export default function TrendDetail(){
           <div className="mt-8 border-t pt-6">
             <button
               onClick={() => setShowRawJson(!showRawJson)}
-              className="text-sm px-3 py-1 bg-slate-200 hover:bg-slate-300 rounded transition"
+              className="text-sm px-3 py-2 bg-slate-200 hover:bg-slate-300 text-slate-800 rounded-lg transition"
             >
               {showRawJson ? 'Hide' : 'Show'} Raw JSON
             </button>

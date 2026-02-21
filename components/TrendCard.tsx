@@ -6,7 +6,7 @@ export default function TrendCard({ trend, profileId }: { trend: any; profileId?
   const reasons = trend.reasons || { matchReasons: [], replicabilityReasons: [] }
 
   return (
-    <div className="p-5 bg-white rounded-lg shadow hover:shadow-md transition">
+    <div className="app-card p-5 hover:shadow-[0_8px_32px_rgba(0,0,0,0.22)] transition-shadow">
       <div className="flex justify-between items-start mb-3">
         <div className="flex-1">
           <p className="text-sm text-slate-500 line-clamp-2">{trend.caption || 'No caption'}</p>
