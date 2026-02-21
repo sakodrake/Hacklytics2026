@@ -1,266 +1,217 @@
-import { useState } from 'react'
-import { useRouter } from 'next/router'
-import Link from 'next/link'
-import { Syne } from 'next/font/google'
-
-const syne = Syne({ subsets: ['latin'], weight: ['600', '700', '800'], display: 'swap' })
-
-const NICHES = ['Tech', 'Fitness', 'Study', 'Fashion', 'Food']
-const EFFORT_LEVELS = ['low', 'med', 'high']
-const STYLES = ['Educational', 'Storytelling', 'Memes', 'Cinematic', 'Talking-head']
-
+import { useState } from 'react';
+import { useRouter } from 'next/router';
+import Head from 'next/head';
 
 export default function Onboarding() {
-  const [primaryNiche, setPrimaryNiche] = useState('Tech')
-  const [customPrimary, setCustomPrimary] = useState('')
-  const [interests, setInterests] = useState<string[]>(['Tech'])
-  const [newInterest, setNewInterest] = useState('')
-  const [goals, setGoals] = useState<string[]>(['engagement'])
-  const [style, setStyle] = useState(STYLES[0])
-  const [noFace, setNoFace] = useState(true)
-  const [effortLevel, setEffortLevel] = useState('med')
-  const [videoLength, setVideoLength] = useState('30')
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState('')
-  const router = useRouter()
+  const router = useRouter();
+  const [primaryNiche, setPrimaryNiche] = useState('');
+  const [keywords, setKeywords] = useState<string[]>([]);
+  const [avoidKeywords, setAvoidKeywords] = useState<string[]>([]); // Add this
+  const [currentKeyword, setCurrentKeyword] = useState('');
+  const [currentAvoidKeyword, setCurrentAvoidKeyword] = useState(''); // Add this
+  const [noFace, setNoFace] = useState(false);
+  const [effortLevel, setEffortLevel] = useState('med');
+  const [region, setRegion] = useState('US');
+  const [videoLength, setVideoLength] = useState(30); // Add this
+  const [loading, setLoading] = useState(false);
 
-  function toggleInterest(n: string) {
-    setInterests(prev => (prev.includes(n) ? prev.filter(x => x !== n) : [...prev, n]))
-  }
-
-  function addInterest() {
-    const v = newInterest.trim()
-    if (!v) return
-    if (!interests.includes(v)) {
-      setInterests(prev => [...prev, v])
+  const addKeyword = () => {
+    if (currentKeyword.trim() && !keywords.includes(currentKeyword.trim())) {
+      setKeywords([...keywords, currentKeyword.trim()]);
+      setCurrentKeyword('');
     }
-    setNewInterest('')
-  }
+  };
 
-  function onInterestKey(e: React.KeyboardEvent<HTMLInputElement>) {
-    if (e.key === 'Enter') {
-      e.preventDefault()
-      addInterest()
+  const removeKeyword = (keyword: string) => {
+    setKeywords(keywords.filter(k => k !== keyword));
+  };
+
+  // Add these new functions
+  const addAvoidKeyword = () => {
+    if (currentAvoidKeyword.trim() && !avoidKeywords.includes(currentAvoidKeyword.trim())) {
+      setAvoidKeywords([...avoidKeywords, currentAvoidKeyword.trim()]);
+      setCurrentAvoidKeyword('');
     }
-  }
+  };
 
-  async function save() {
-    setLoading(true)
-    setError('')
+  const removeAvoidKeyword = (keyword: string) => {
+    setAvoidKeywords(avoidKeywords.filter(k => k !== keyword));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+
     try {
-      const primaryToSave = primaryNiche === 'Other' ? (customPrimary.trim() || '') : primaryNiche
-
       const response = await fetch('/api/profile', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          primaryNiche: primaryToSave,
-          interests,
-          goals,
-          style: [style],
+          primaryNiche,
+          nicheKeywords: keywords,
+          avoidKeywords: avoidKeywords, // Add this
           noFace,
           effortLevel,
+          region,
           videoLength
         })
-      })
+      });
 
-      if (!response.ok) {
-        const data = await response.json()
-        throw new Error(data.message || 'Failed to save profile')
+      if (response.ok) {
+        const profile = await response.json();
+        router.push(`/trend/feed?profileId=${profile.id}`);
       }
-
-      const { profileId } = await response.json()
-      localStorage.setItem('trendspinoff_profileId', profileId)
-      localStorage.setItem('trendspinoff_profile', JSON.stringify({
-        primaryNiche: primaryToSave,
-        interests,
-        goals,
-        noFace,
-        effortLevel,
-        videoLength
-      }))
-      router.push('/feed')
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error saving profile')
+    } catch (error) {
+      console.error('Error creating profile:', error);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   return (
-    <div className="min-h-screen relative overflow-hidden">
-      <div className="app-bg absolute inset-0 -z-10" aria-hidden />
-      <div className="relative min-h-screen p-6 flex flex-col items-center">
-        <div className="w-full max-w-2xl mx-auto">
-          <Link href="/" className="inline-flex items-center text-white/80 hover:text-white text-sm mb-8 transition-colors">
-            ← Back
-          </Link>
-
-          <div className="text-center mb-8 animate-fade-in">
-            <h1 className={`${syne.className} page-title text-4xl sm:text-5xl mb-2`}>
-              TrendSpinoff Setup
-            </h1>
-            <p className="page-subtitle text-lg">
-              Tell us your preferences so we can find trends that work for you
-            </p>
-          </div>
-
-          {error && (
-            <div className="app-card p-4 mb-6 border-l-4 border-red-500 text-red-800 text-sm">
-              {error}
-            </div>
-          )}
-
-          <div className="app-card p-6 sm:p-8 space-y-6 animate-fade-in">
+    <>
+      <Head>
+        <title>Onboarding — TrendSpinoff</title>
+      </Head>
+      <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-pink-800 py-12 px-4">
+        <div className="max-w-2xl mx-auto bg-white/10 backdrop-blur-lg rounded-2xl p-8">
+          <h1 className="text-3xl font-bold text-white mb-8">Tell us about your content interests</h1>
+          
+          <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label className="label block mb-3">Primary Niche</label>
-              <div className="flex flex-wrap gap-2">
-                {NICHES.map(n => (
-                  <button
-                    key={n}
-                    onClick={() => { setPrimaryNiche(n); setCustomPrimary('') }}
-                    className={`px-4 py-2 rounded-xl font-medium transition ${
-                      primaryNiche === n
-                        ? 'bg-slate-800 text-white shadow'
-                        : 'bg-slate-200 text-slate-700 hover:bg-slate-300'
-                    }`}
-                  >
-                    {n}
-                  </button>
-                ))}
-
-                <button
-                  onClick={() => setPrimaryNiche('Other')}
-                  className={`px-4 py-2 rounded-xl font-medium transition ${
-                    primaryNiche === 'Other'
-                      ? 'bg-slate-800 text-white shadow'
-                      : 'bg-slate-200 text-slate-700 hover:bg-slate-300'
-                  }`}
-                >
-                  Other
-                </button>
-              </div>
-
-              {primaryNiche === 'Other' && (
-                <div className="mt-3">
-                  <input
-                    type="text"
-                    value={customPrimary}
-                    onChange={e => setCustomPrimary(e.target.value)}
-                    placeholder="Enter your niche (e.g. 'SaaS', 'Parenting')"
-                    className="w-full p-3 bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-400 text-slate-800"
-                  />
-                </div>
-              )}
+              <label className="block text-white mb-2">Primary Niche</label>
+              <input 
+                type="text" 
+                value={primaryNiche}
+                onChange={(e) => setPrimaryNiche(e.target.value)}
+                placeholder="e.g., tech, cooking, gaming"
+                className="w-full px-4 py-3 rounded-xl bg-white/20 text-white placeholder-white/50 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white"
+                required
+              />
             </div>
 
             <div>
-              <label className="label block mb-3">Interests (select all that apply)</label>
-              <div className="flex flex-wrap gap-2 mb-3">
-                {NICHES.map(n => (
-                  <button
-                    key={n}
-                    onClick={() => toggleInterest(n)}
-                    className={`px-3 py-2 rounded-xl text-sm font-medium transition ${
-                      interests.includes(n)
-                        ? 'bg-slate-700 text-white'
-                        : 'bg-slate-200 text-slate-700 hover:bg-slate-300'
-                    }`}
-                  >
-                    {n}
-                  </button>
-                ))}
-
-                {interests.filter(i => !NICHES.includes(i)).map(ci => (
-                  <button
-                    key={ci}
-                    onClick={() => toggleInterest(ci)}
-                    className="px-3 py-2 rounded-xl text-sm font-medium transition bg-slate-700 text-white"
-                  >
-                    {ci}
-                  </button>
-                ))}
-              </div>
-
+              <label className="block text-white mb-2">Keywords (what you want to create about)</label>
               <div className="flex gap-2">
                 <input
                   type="text"
-                  value={newInterest}
-                  onChange={e => setNewInterest(e.target.value)}
-                  onKeyDown={onInterestKey}
-                  placeholder="Add another interest and press Enter"
-                  className="flex-1 p-3 bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-400 text-slate-800"
+                  value={currentKeyword}
+                  onChange={(e) => setCurrentKeyword(e.target.value)}
+                  placeholder="e.g., python tutorial, vegan recipes"
+                  className="flex-1 px-4 py-3 rounded-xl bg-white/20 text-white placeholder-white/50 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white"
+                  onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addKeyword())}
                 />
-                <button
-                  onClick={addInterest}
-                  className="px-4 py-2 rounded-xl bg-slate-800 text-white"
+                <button 
+                  type="button" 
+                  onClick={addKeyword}
+                  className="px-6 py-3 bg-white text-purple-900 rounded-xl font-semibold hover:bg-white/90 transition"
                 >
                   Add
                 </button>
               </div>
+              
+              <div className="flex flex-wrap gap-2 mt-4">
+                {keywords.map(keyword => (
+                  <span key={keyword} className="bg-white/20 text-white px-3 py-1 rounded-full flex items-center gap-2">
+                    {keyword}
+                    <button type="button" onClick={() => removeKeyword(keyword)} className="text-white/70 hover:text-white">×</button>
+                  </span>
+                ))}
+              </div>
             </div>
 
+            {/* Add avoid keywords section */}
             <div>
-              <label className="label block mb-3">Preferred Style</label>
-              <select
-                value={style}
-                onChange={e => setStyle(e.target.value)}
-                className="w-full p-3 bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-400 focus:border-transparent text-slate-800"
-              >
-                {STYLES.map(s => (
-                  <option key={s} value={s}>{s}</option>
+              <label className="block text-white mb-2">Avoid Keywords (topics you want to avoid)</label>
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={currentAvoidKeyword}
+                  onChange={(e) => setCurrentAvoidKeyword(e.target.value)}
+                  placeholder="e.g., politics, drama"
+                  className="flex-1 px-4 py-3 rounded-xl bg-white/20 text-white placeholder-white/50 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white"
+                  onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addAvoidKeyword())}
+                />
+                <button 
+                  type="button" 
+                  onClick={addAvoidKeyword}
+                  className="px-6 py-3 bg-white/20 text-white rounded-xl font-semibold hover:bg-white/30 transition border border-white/30"
+                >
+                  Add
+                </button>
+              </div>
+              
+              <div className="flex flex-wrap gap-2 mt-4">
+                {avoidKeywords.map(keyword => (
+                  <span key={keyword} className="bg-red-500/30 text-white px-3 py-1 rounded-full flex items-center gap-2">
+                    {keyword}
+                    <button type="button" onClick={() => removeAvoidKeyword(keyword)} className="text-white/70 hover:text-white">×</button>
+                  </span>
                 ))}
-              </select>
+              </div>
             </div>
 
             <div className="flex items-center gap-3">
-              <input
-                type="checkbox"
-                id="noFace"
-                checked={noFace}
-                onChange={e => setNoFace(e.target.checked)}
-                className="w-5 h-5 rounded border-slate-300 text-slate-700 focus:ring-slate-500"
+              <input 
+                type="checkbox" 
+                id="noFace" 
+                checked={noFace} 
+                onChange={(e) => setNoFace(e.target.checked)}
+                className="w-5 h-5"
               />
-              <label htmlFor="noFace" className="label">
-                Prefer videos without showing my face
-              </label>
+              <label htmlFor="noFace" className="text-white">Prefer videos without face/faceless content</label>
             </div>
 
             <div>
-              <label className="label block mb-3">Effort Level</label>
-              <select
-                value={effortLevel}
-                onChange={e => setEffortLevel(e.target.value)}
-                className="w-full p-3 bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-400 focus:border-transparent text-slate-800"
+              <label className="block text-white mb-2">Preferred Video Length (seconds)</label>
+              <input
+                type="number"
+                value={videoLength}
+                onChange={(e) => setVideoLength(parseInt(e.target.value))}
+                min="15"
+                max="300"
+                className="w-full px-4 py-3 rounded-xl bg-white/20 text-white border border-white/30 focus:outline-none focus:ring-2 focus:ring-white"
+              />
+            </div>
+
+            <div>
+              <label className="block text-white mb-2">Effort Level</label>
+              <select 
+                value={effortLevel} 
+                onChange={(e) => setEffortLevel(e.target.value)}
+                className="w-full px-4 py-3 rounded-xl bg-white/20 text-white border border-white/30 focus:outline-none focus:ring-2 focus:ring-white"
               >
-                <option value="low">Low (quick clips, minimal editing)</option>
-                <option value="med">Medium (some editing, planning)</option>
-                <option value="high">High (production-level content)</option>
+                <option value="low">Low - Simple, quick to make</option>
+                <option value="med">Medium - Moderate editing required</option>
+                <option value="high">High - Complex production</option>
               </select>
             </div>
 
             <div>
-              <label className="label block mb-3">
-                Preferred Video Length (seconds)
-              </label>
-              <input
-                type="number"
-                value={videoLength}
-                onChange={e => setVideoLength(e.target.value)}
-                className="w-full p-3 bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-400 text-slate-800"
-              />
+              <label className="block text-white mb-2">Region</label>
+              <select 
+                value={region} 
+                onChange={(e) => setRegion(e.target.value)}
+                className="w-full px-4 py-3 rounded-xl bg-white/20 text-white border border-white/30 focus:outline-none focus:ring-2 focus:ring-white"
+              >
+                <option value="US">United States</option>
+                <option value="GB">United Kingdom</option>
+                <option value="CA">Canada</option>
+                <option value="AU">Australia</option>
+                <option value="IN">India</option>
+              </select>
             </div>
 
-            <button
-              onClick={save}
+            <button 
+              type="submit" 
               disabled={loading}
-              className="btn-primary w-full px-6 py-4 text-lg"
+              className="w-full py-4 bg-white text-purple-900 rounded-xl font-bold text-lg hover:bg-white/90 transition disabled:opacity-50"
             >
-              {loading ? 'Saving...' : 'Save & Start Finding Trends'}
+              {loading ? 'Creating profile...' : 'Continue to Feed'}
             </button>
-          </div>
+          </form>
         </div>
       </div>
-    </div>
-  )
+    </>
+  );
 }

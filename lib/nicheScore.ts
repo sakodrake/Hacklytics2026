@@ -1,63 +1,87 @@
 // lib/nicheScore.ts
-// Lightweight niche relevance scoring (intentionally not "too specific").
 
-import type { YouTubeTrendingVideo } from "./youtube";
-
-export type ScoredVideo = YouTubeTrendingVideo & {
+// Export the ScoredVideo type
+export type ScoredVideo = {
+  videoId: string;
+  title: string;
+  description: string;
+  channelTitle: string;
+  channelId: string;
+  publishedAt: string;
+  thumbnails: any;
+  tags: string[];
+  categoryId: string;
+  viewCount: number;
+  likeCount: number;
+  commentCount: number;
   matchedTerms: string[];
-  relevanceScore: number; // 0..1
+  relevanceScore: number;
 };
 
-function tokenize(s: string): string[] {
-  return s
-    .toLowerCase()
-    .replace(/[^a-z0-9\s]/g, " ")
-    .split(/\s+/)
-    .filter(Boolean);
-}
+export function scoreTrendingByNiche(videos: any[], searchTerms: string | string[]): ScoredVideo[] {
+  const terms = Array.isArray(searchTerms) ? searchTerms : [searchTerms];
+  
+  return videos.map(video => {
+    const titleLower = video.title?.toLowerCase() || '';
+    const descriptionLower = video.description?.toLowerCase() || '';
+    const tagsLower = (video.tags || []).map((t: string) => t.toLowerCase());
+    
+    const matchedTerms: string[] = [];
+    let matchCount = 0;
+    let relevanceScore = 0;
 
-function unique(arr: string[]): string[] {
-  return Array.from(new Set(arr));
-}
+    // Check each search term
+    terms.forEach(term => {
+      const termLower = term.toLowerCase();
+      let termMatches = 0;
+      
+      // Check title (highest weight)
+      if (titleLower.includes(termLower)) {
+        termMatches += 3;
+        if (!matchedTerms.includes(term)) matchedTerms.push(term);
+      }
+      
+      // Check tags (medium weight)
+      if (tagsLower.some(tag => tag.includes(termLower))) {
+        termMatches += 2;
+        if (!matchedTerms.includes(term)) matchedTerms.push(term);
+      }
+      
+      // Check description (lower weight)
+      if (descriptionLower.includes(termLower)) {
+        termMatches += 1;
+        if (!matchedTerms.includes(term)) matchedTerms.push(term);
+      }
+      
+      matchCount += termMatches;
+    });
 
-// very small stopword list (keep hackathon-simple)
-const STOP = new Set(["the","a","an","and","or","to","of","in","on","for","with","is","are","this","that","you","your"]);
+    // Calculate base relevance score (0-1)
+    if (terms.length > 0) {
+      relevanceScore = Math.min(matchCount / (terms.length * 3), 1);
+    }
 
-export function scoreTrendingByNiche(videos: YouTubeTrendingVideo[], nicheOrKeywords: string | string[]): ScoredVideo[] {
-  // Accept either a plain niche string or an array of keyword strings
-  const rawTerms = Array.isArray(nicheOrKeywords)
-    ? nicheOrKeywords.join(' ')
-    : String(nicheOrKeywords || '');
-
-  const nicheTerms = unique(tokenize(rawTerms).filter(t => !STOP.has(t)));
-  if (nicheTerms.length === 0) {
-    // if niche is empty/stopwords, return with neutral scores
-    return videos.map(v => ({ ...v, matchedTerms: [], relevanceScore: 0.0 }));
-  }
-
-  return videos.map((v) => {
-    const hay = [
-      v.title,
-      v.description,
-      ...(v.tags ?? []),
-      v.channelTitle
-    ].join(" ").toLowerCase();
-
-  // exact substring matches against combined fields
-  const matched = nicheTerms.filter(t => hay.includes(t));
-
-    // relevance: primarily lexical match coverage, lightly boosted by engagement
-    const coverage = matched.length / nicheTerms.length; // 0..1
-    const engagement = v.viewCount > 0 ? ((v.likeCount + v.commentCount) / v.viewCount) : 0; // ~0..0.2 typical
-    const engagementBoost = Math.max(0, Math.min(engagement * 2.5, 0.25)); // cap boost at +0.25
-
-    const relevanceScore = Math.max(0, Math.min(coverage + engagementBoost, 1));
+    // Boost score based on engagement (view count as proxy for trending)
+    const viewBoost = video.viewCount ? Math.min(Math.log10(video.viewCount) / 7, 0.3) : 0;
+    
+    // Final score combines relevance and trending factor
+    const finalScore = relevanceScore * 0.7 + viewBoost * 0.3;
 
     return {
-      ...v,
-      matchedTerms: matched,
-      relevanceScore,
+      videoId: video.videoId,
+      title: video.title,
+      description: video.description,
+      channelTitle: video.channelTitle,
+      channelId: video.channelId,
+      publishedAt: video.publishedAt,
+      thumbnails: video.thumbnails,
+      tags: video.tags || [],
+      categoryId: video.categoryId,
+      viewCount: video.viewCount || 0,
+      likeCount: video.likeCount || 0,
+      commentCount: video.commentCount || 0,
+      matchedTerms,
+      relevanceScore: finalScore,
     };
-  })
-  .sort((a, b) => b.relevanceScore - a.relevanceScore);
+  });
 }

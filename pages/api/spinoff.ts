@@ -67,7 +67,12 @@ function normalizeStringList(input: unknown): string[] {
 }
 
 async function generateSpinoffsWithGemini(
-  profile: { primaryNiche?: string; nicheKeywords?: string[]; noFace?: boolean; effortLevel?: string },
+  profile: { 
+    primaryNiche?: string; 
+    nicheKeywords?: string | string[]; // Changed to accept string or string[]
+    noFace?: boolean; 
+    effortLevel?: string;
+  },
   trend: { caption?: string; hashtags?: unknown; views?: number; likes?: number }
 ): Promise<Spinoff[]> {
   const apiKey = process.env.GEMINI_API_KEY;
@@ -78,7 +83,9 @@ async function generateSpinoffsWithGemini(
 
   const tagList = normalizeHashtags(trend.hashtags);
 
+  // Normalize nicheKeywords - handle both string and array
   const topics = normalizeStringList(profile.nicheKeywords);
+  
   const prompt = `You are a TikTok content strategist. Generate 3 ORIGINAL spinoff ideas for this trend.
 
 Original Trend:
@@ -116,7 +123,11 @@ Return ONLY a JSON array of 3 spinoff objects with these exact fields (nothing e
 }
 
 function generateFallbackSpinoffs(
-  profile: { primaryNiche?: string; effortLevel?: string },
+  profile: { 
+    primaryNiche?: string; 
+    nicheKeywords?: string | string[]; // Changed to accept string or string[]
+    effortLevel?: string;
+  },
   trend: { caption?: string; hashtags?: unknown }
 ): Spinoff[] {
   const niche = profile.primaryNiche || "tech";
@@ -191,13 +202,21 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     const normalizedVideoHashtags = normalizeHashtags(video.hashtags);
 
+    // Parse nicheKeywords from JSON string if needed
+    let nicheKeywordsArray: string[] = [];
+    try {
+      nicheKeywordsArray = JSON.parse(profile.nicheKeywords);
+    } catch (e) {
+      nicheKeywordsArray = profile.nicheKeywords ? [profile.nicheKeywords] : [];
+    }
+
     let spinoffs: Spinoff[] = [];
     if (process.env.GEMINI_API_KEY) {
       try {
         spinoffs = await generateSpinoffsWithGemini(
           {
             primaryNiche: profile.primaryNiche,
-            nicheKeywords: profile.nicheKeywords,
+            nicheKeywords: nicheKeywordsArray, // Pass the parsed array
             noFace: profile.noFace,
             effortLevel: profile.effortLevel,
           },
@@ -210,16 +229,30 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         );
       } catch (err) {
         console.error("Gemini spinoff generation failed, using fallback:", err);
-        spinoffs = generateFallbackSpinoffs(profile, {
-          caption: video.caption || undefined,
-          hashtags: normalizedVideoHashtags,
-        });
+        spinoffs = generateFallbackSpinoffs(
+          {
+            primaryNiche: profile.primaryNiche,
+            nicheKeywords: nicheKeywordsArray, // Pass the parsed array
+            effortLevel: profile.effortLevel,
+          },
+          {
+            caption: video.caption || undefined,
+            hashtags: normalizedVideoHashtags,
+          }
+        );
       }
     } else {
-      spinoffs = generateFallbackSpinoffs(profile, {
-        caption: video.caption || undefined,
-        hashtags: normalizedVideoHashtags,
-      });
+      spinoffs = generateFallbackSpinoffs(
+        {
+          primaryNiche: profile.primaryNiche,
+          nicheKeywords: nicheKeywordsArray, // Pass the parsed array
+          effortLevel: profile.effortLevel,
+        },
+        {
+          caption: video.caption || undefined,
+          hashtags: normalizedVideoHashtags,
+        }
+      );
     }
 
     return res.status(200).json({ spinoffs });

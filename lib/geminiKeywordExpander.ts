@@ -20,10 +20,11 @@ export async function expandKeywordsWithGemini(
     };
   }
 
-  const genAI = new GoogleGenerativeAI(apiKey);
-  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+  try {
+    const genAI = new GoogleGenerativeAI(apiKey);
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-  const prompt = `You are a YouTube search expert. Help me create effective search queries for finding trending videos in a specific niche.
+    const prompt = `You are a YouTube search expert. Help me create effective search queries for finding trending videos in a specific niche.
 
 Niche: "${niche}"
 User's keywords: ${userKeywords.join(', ')}
@@ -39,7 +40,6 @@ Consider:
 Return ONLY a JSON array of strings, nothing else:
 ["term 1", "term 2", "term 3", ...]`;
 
-  try {
     const result = await model.generateContent(prompt);
     const text = result.response.text();
     
@@ -51,7 +51,7 @@ Return ONLY a JSON array of strings, nothing else:
     
     const expandedTerms = JSON.parse(jsonMatch[0]);
     
-    // Combine original and expanded terms
+    // Combine original and expanded terms (remove duplicates)
     const allTerms = [...new Set([...userKeywords, ...expandedTerms])];
     
     return {

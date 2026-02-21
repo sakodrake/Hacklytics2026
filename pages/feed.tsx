@@ -1,197 +1,154 @@
-import { useEffect, useState } from 'react'
-import { useRouter } from 'next/router'
-import Link from 'next/link'
-import { Syne } from 'next/font/google'
-import TrendCard from '../components/TrendCard'
-
-const syne = Syne({ subsets: ['latin'], weight: ['600', '700', '800'], display: 'swap' })
-
-const fetcher = (url: string) => fetch(url).then(r => {
-  if (!r.ok) throw new Error('Failed to fetch')
-  return r.json()
-})
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import Head from 'next/head';
+import Link from 'next/link';
 
 export default function Feed() {
-  const router = useRouter()
-  const [profileId, setProfileId] = useState<string | null>(null)
-  const [refreshing, setRefreshing] = useState(false)
-  const [error, setError] = useState('')
-  const [lastFetch, setLastFetch] = useState<string | null>(null)
-  const [isDemo, setIsDemo] = useState(false)
-
-  // live trends state (mapped to TrendCard shape)
-  const [trends, setTrends] = useState<any[]>([])
-  const [isLoading, setIsLoading] = useState(true)
+  const router = useRouter();
+  const { profileId } = router.query;
+  
+  const [trends, setTrends] = useState<any[]>([]);
+  const [patterns, setPatterns] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [profile, setProfile] = useState<any>(null);
 
   useEffect(() => {
-    const id = localStorage.getItem('trendspinoff_profileId')
-    const profileJson = localStorage.getItem('trendspinoff_profile')
-    if (!id || !profileJson) {
-      router.push('/onboarding')
-      return
+    if (profileId) {
+      fetchProfile();
+      fetchTrends();
     }
-    setProfileId(id)
+  }, [profileId]);
 
-    // initial fetch
+  const fetchProfile = async () => {
     try {
-      const profile = JSON.parse(profileJson)
-      const niche = (profile.primaryNiche || '').trim()
-      fetchLiveTrends(niche)
-    } catch (e) {
-      // fallback: still try to fetch without niche
-      fetchLiveTrends('')
+      const res = await fetch(`/api/profile?profileId=${profileId}`);
+      const data = await res.json();
+      setProfile(data);
+    } catch (error) {
+      console.error('Error fetching profile:', error);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router])
+  };
 
-  async function fetchLiveTrends(niche: string) {
-    setIsLoading(true)
-    setRefreshing(true)
-    setError('')
+  const fetchTrends = async () => {
     try {
-      // build keywords from primary niche + interests saved in profile
-      const profile = typeof window !== 'undefined' ? JSON.parse(localStorage.getItem('trendspinoff_profile') || '{}') : {}
-      const interests = Array.isArray(profile?.interests) ? profile.interests : []
-      const keywords = [niche, ...interests].filter(Boolean)
-      const q = niche ? `?niche=${encodeURIComponent(niche)}` : ''
-      const kq = keywords.length ? `${q ? '&' : '?'}keywords=${encodeURIComponent(keywords.join(','))}` : ''
-      const response = await fetch(`/api/youtube-trends${q}${kq}`)
-      if (!response.ok) {
-        const data = await response.json().catch(() => ({}))
-        throw new Error(data.message || 'Failed to fetch youtube trends')
-      }
-      const data = await response.json()
-
-      // Map youtube-trends response into shape TrendCard expects
-      const mapped = (data.videos || []).map((v: any) => ({
-        id: v.videoId,
-        caption: v.title,
-        hashtags: v.tags || [],
-        views: v.viewCount || 0,
-        likes: v.likeCount || 0,
-        comments: v.commentCount || 0,
-        shares: v.shareCount || 0,
-        scores: {
-          final: typeof v.relevanceScore === 'number' ? Math.round(v.relevanceScore) : (v.relevanceScore ?? 0),
-          match: 0,
-          velocity: 0,
-          replicability: 0
-        },
-        reasons: {
-          matchReasons: v.matchedTerms || [],
-          replicabilityReasons: []
-        }
-      }))
-
-      setTrends(mapped)
-      setLastFetch(new Date().toLocaleString())
-      setIsDemo(false)
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error fetching live trends')
+      const res = await fetch(`/api/youtube-trends?profileId=${profileId}`);
+      const data = await res.json();
+      setTrends(data.videos || []);
+      setPatterns(data.patterns);
+    } catch (error) {
+      console.error('Error fetching trends:', error);
     } finally {
-      setRefreshing(false)
-      setIsLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
-  async function refreshTrends() {
-    // refresh using stored profile if possible
-    const profileJson = localStorage.getItem('trendspinoff_profile')
-    let niche = ''
-    if (profileJson) {
-      try { niche = JSON.parse(profileJson).primaryNiche || '' } catch { niche = '' }
-    }
-    await fetchLiveTrends(niche)
-  }
-
-  if (!profileId) {
+  if (loading) {
     return (
-      <div className="min-h-screen app-bg flex items-center justify-center">
-        <p className="page-subtitle">Redirecting...</p>
+      <div className="min-h-screen bg-gradient-to-br from-purple-900 to-pink-800 flex items-center justify-center">
+        <div className="text-white text-xl">Finding trends for you...</div>
       </div>
-    )
+    );
   }
-  if (error) {
-    return (
-      <div className="min-h-screen app-bg flex items-center justify-center p-6">
-        <p className="text-red-300">{error}. Try refreshing.</p>
-      </div>
-    )
-  }
-  if (isLoading) {
-    return (
-      <div className="min-h-screen app-bg flex items-center justify-center">
-        <p className="page-subtitle">Loading trends...</p>
-      </div>
-    )
-  }
-
-  const fetchedAt = lastFetch || 'Never'
-  const videoCount = trends.length || 0
-  const hashtagCount = 0
 
   return (
-    <div className="min-h-screen relative overflow-hidden">
-      <div className="app-bg absolute inset-0 -z-10" aria-hidden />
-      <div className="relative min-h-screen p-4 md:p-6">
-        <div className="max-w-4xl mx-auto">
-          <div className="flex items-center justify-between mb-6">
-            <Link href="/" className="link-muted text-sm transition-colors">
-              ← Home
-            </Link>
+    <>
+      <Head>
+        <title>Your Feed — TrendSpinoff</title>
+      </Head>
+      <div className="min-h-screen bg-gray-50">
+        {/* Header */}
+        <header className="bg-white shadow-sm">
+          <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+            <h1 className="text-2xl font-bold text-purple-900">TrendSpinoff</h1>
+            <div className="flex gap-4">
+              <Link href={`/trend/insights?profileId=${profileId}`} className="text-purple-600 hover:text-purple-800">
+                Insights
+              </Link>
+              <Link href={`/onboarding?edit=${profileId}`} className="text-purple-600 hover:text-purple-800">
+                Edit Profile
+              </Link>
+            </div>
           </div>
+        </header>
 
-          <div className="text-center mb-8">
-            <h1 className={`${syne.className} page-title text-4xl sm:text-5xl mb-2`}>
-              TrendSpinoff Feed
-            </h1>
-            <p className="page-subtitle text-lg">
-              Discover trending videos tailored to your style and niche
+        <main className="max-w-7xl mx-auto px-4 py-8">
+          {/* Welcome message */}
+          <div className="mb-8">
+            <h2 className="text-3xl font-bold text-gray-900">
+              Trends for {profile?.primaryNiche || 'your niche'}
+            </h2>
+            <p className="text-gray-600 mt-2">
+              Based on: {profile?.nicheKeywords?.join(', ')}
             </p>
           </div>
 
-          <div className="app-card p-4 sm:p-6 mb-6">
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-              <div className="space-y-1 text-slate-700">
-                <p className="text-sm">
-                  <span className="font-semibold">Last fetched:</span> {fetchedAt}
-                  {isDemo && (
-                    <span className="ml-2 inline-block px-2 py-1 bg-slate-200 text-slate-800 text-xs rounded-lg">
-                      Demo Mode
-                    </span>
-                  )}
-                </p>
-                <p className="text-sm">
-                  <span className="font-semibold">Records:</span> {videoCount} videos, {hashtagCount} hashtags
-                </p>
+          {/* Format suggestions */}
+          {patterns && (
+            <div className="mb-12 bg-gradient-to-r from-purple-50 to-pink-50 rounded-2xl p-6">
+              <h3 className="text-xl font-semibold text-gray-900 mb-4">📋 Video Format Suggestions</h3>
+              <div className="grid md:grid-cols-2 gap-4">
+                {patterns.hooks?.map((hook: string, i: number) => (
+                  <div key={i} className="bg-white rounded-lg p-4 shadow-sm">
+                    <p className="text-gray-800">{hook}</p>
+                  </div>
+                ))}
+                {patterns.structures?.map((structure: string, i: number) => (
+                  <div key={i} className="bg-white rounded-lg p-4 shadow-sm">
+                    <p className="text-gray-800">{structure}</p>
+                  </div>
+                ))}
               </div>
-              <button
-                onClick={refreshTrends}
-                disabled={refreshing}
-                className="btn-primary px-6 py-3 shrink-0"
-              >
-                {refreshing ? 'Fetching...' : 'Refresh Trends'}
-              </button>
-            </div>
-            {error && <p className="text-red-600 text-sm mt-3">{error}</p>}
-          </div>
-
-          {trends.length === 0 ? (
-            <div className="app-card p-12 text-center">
-              <p className="text-slate-700 mb-6">No trends loaded yet. Click below to fetch live data.</p>
-              <button onClick={refreshTrends} className="btn-primary px-8 py-4 text-lg">
-                Fetch Live Trends
-              </button>
-            </div>
-          ) : (
-            <div className="space-y-4">
-              {trends.map((t: any) => (
-                <TrendCard key={t.id} trend={t} profileId={profileId} />
-              ))}
             </div>
           )}
-        </div>
+
+          {/* Trending videos */}
+          <div>
+            <h3 className="text-2xl font-semibold text-gray-900 mb-6">Trending in Your Niche</h3>
+            {trends.length === 0 ? (
+              <p className="text-gray-500">No trending videos found for your interests. Try adding more keywords.</p>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {trends.map(video => (
+                  <a 
+                    key={video.videoId}
+                    href={video.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition"
+                  >
+                    <img 
+                      src={video.thumbnails?.medium?.url} 
+                      alt={video.title}
+                      className="w-full h-48 object-cover"
+                    />
+                    <div className="p-4">
+                      <h4 className="font-semibold text-gray-900 line-clamp-2">{video.title}</h4>
+                      <p className="text-sm text-gray-600 mt-1">{video.channelTitle}</p>
+                      <div className="flex items-center justify-between mt-3">
+                        <span className="text-sm text-purple-600">
+                          {Math.round(video.relevanceScore * 100)}% match
+                        </span>
+                        <span className="text-sm text-gray-500">
+                          {video.viewCount?.toLocaleString()} views
+                        </span>
+                      </div>
+                      {video.matchedTerms?.length > 0 && (
+                        <div className="mt-2 flex flex-wrap gap-1">
+                          {video.matchedTerms.slice(0, 3).map((term: string) => (
+                            <span key={term} className="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded">
+                              {term}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </a>
+                ))}
+              </div>
+            )}
+          </div>
+        </main>
       </div>
-    </div>
-  )
+    </>
+  );
 }
