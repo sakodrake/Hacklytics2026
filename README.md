@@ -2,6 +2,13 @@
 
 Minimal Next.js + Tailwind demo for the Hacklytics2026 prototype.
 
+## New: YouTube Trending + Niche Filter + Gemini Pattern Extraction
+
+This repo now includes an API route that:
+1) pulls **global trending** YouTube videos (region-based),
+2) filters/sorts them by a user-provided niche keyword,
+3) sends the best-matching videos to Gemini for **pattern extraction**.
+
 Quick start:
 
 ```bash

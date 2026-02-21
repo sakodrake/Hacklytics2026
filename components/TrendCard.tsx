@@ -21,6 +21,9 @@ export default function TrendCard({ trend, profileId }: { trend: any; profileId?
         <div className="ml-4 text-right">
           <div className="text-lg font-bold text-slate-800">{scores.final}</div>
           <div className="text-xs text-slate-500">FINAL SCORE</div>
+          {typeof trend.relevanceScore !== 'undefined' && (
+            <div className="text-xs text-slate-500 mt-1">Relevance: <span className="font-semibold text-slate-800">{Math.round(trend.relevanceScore)}</span></div>
+          )}
         </div>
       </div>
 

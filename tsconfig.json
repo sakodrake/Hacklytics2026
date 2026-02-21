@@ -1,5 +1,8 @@
 {
   "compilerOptions": {
+    // NOTE: This repo already uses "@/..." path alias mapping to project root.
+    // The new files under /lib rely on it.
+    // No changes required if this is already working for you.
     "target": "ES2020",
     "lib": [
       "dom",

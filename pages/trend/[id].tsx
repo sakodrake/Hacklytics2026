@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import useSWR from 'swr'
 import SpinoffPanel from '../../components/SpinoffPanel'
 import ScoreBadge from '../../components/ScoreBadge'
@@ -22,8 +22,66 @@ export default function TrendDetail(){
     fetcher
   )
 
-  const trend = data?.trends?.find((t: any) => t.id === id)
+  const snapshotTrend = data?.trends?.find((t: any) => t.id === id)
   const profileIdStr = typeof profileId === 'string' ? profileId : null
+
+  // Youtube fallback when snapshot doesn't contain the trend
+  const [youtubeTrend, setYoutubeTrend] = useState<any | null>(null)
+  const [youtubeLoading, setYoutubeLoading] = useState(false)
+  const [youtubeError, setYoutubeError] = useState('')
+
+  const mapYoutubeToTrend = useCallback((v: any) => ({
+    id: v.videoId,
+    caption: v.title,
+    hashtags: v.tags || [],
+    views: v.viewCount || null,
+    likes: v.likeCount || null,
+    comments: v.commentCount || null,
+    shares: v.shareCount || null,
+    scores: {
+      final: typeof v.relevanceScore === 'number' ? Math.round(v.relevanceScore) : (v.relevanceScore ?? 0),
+      match: 0,
+      velocity: 0,
+      replicability: 0
+    },
+    reasons: { matchReasons: v.matchedTerms || [], replicabilityReasons: [] },
+    __raw: v
+  }), [])
+
+  useEffect(() => {
+    if (snapshotTrend || !id) return
+
+    const profileJson = typeof window !== 'undefined' ? localStorage.getItem('trendspinoff_profile') : null
+    let niche = ''
+    if (profileJson) {
+      try { niche = JSON.parse(profileJson).primaryNiche || '' } catch { niche = '' }
+    }
+
+  async function fetchFallback() {
+      setYoutubeLoading(true)
+      setYoutubeError('')
+      try {
+    const profile = typeof window !== 'undefined' ? JSON.parse(localStorage.getItem('trendspinoff_profile') || '{}') : {}
+    const interests = Array.isArray(profile?.interests) ? profile.interests : []
+    const keywords = [niche, ...interests].filter(Boolean)
+    const q = niche ? `?niche=${encodeURIComponent(niche)}` : ''
+    const kq = keywords.length ? `${q ? '&' : '?'}keywords=${encodeURIComponent(keywords.join(','))}` : ''
+    const res = await fetch(`/api/youtube-trends${q}${kq}`)
+        if (!res.ok) throw new Error('Failed to fetch from youtube-trends')
+        const body = await res.json()
+        const found = (body.videos || []).find((v: any) => v.videoId === id)
+        if (found) setYoutubeTrend(mapYoutubeToTrend(found))
+        else setYoutubeError('Trend not found in live YouTube results')
+      } catch (err) {
+        setYoutubeError(err instanceof Error ? err.message : 'Error fetching YouTube trend')
+      } finally {
+        setYoutubeLoading(false)
+      }
+    }
+
+    fetchFallback()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id, snapshotTrend])
 
   async function generateSpinoffs() {
     if (!profileIdStr || !id) return
@@ -51,12 +109,15 @@ export default function TrendDetail(){
     }
   }
 
-  if (isLoading) return (
+  // show loading while snapshot or youtube fallback is loading
+  if (isLoading || youtubeLoading) return (
     <div className="min-h-screen app-bg flex items-center justify-center">
       <p className="page-subtitle">Loading trend...</p>
     </div>
   )
-  if (error || !trend) return (
+
+  const trend = snapshotTrend || youtubeTrend
+  if (error || youtubeError || !trend) return (
     <div className="min-h-screen app-bg flex items-center justify-center p-6">
       <p className="text-red-300">Trend not found</p>
     </div>
