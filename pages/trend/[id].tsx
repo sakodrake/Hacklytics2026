@@ -95,24 +95,62 @@ export default function TrendDetail(){
           </div>
 
           {/* Score Section */}
-          <div className="bg-gradient-to-r from-blue-50 to-slate-50 rounded-lg p-5 mb-6">
+          <div className="mb-6">
             <h3 className="font-semibold text-slate-800 mb-3">Performance Scores</h3>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-              <div className="text-center">
-                <div className="text-3xl font-bold text-blue-600">{scores.match}</div>
-                <div className="text-xs text-slate-600">Match</div>
+            <div className="grid grid-cols-3 gap-3 mb-4">
+              <div className="rounded-xl border-2 border-blue-200 bg-blue-50/80 p-4 text-center shadow-sm">
+                <div className="text-2xl sm:text-3xl font-bold text-blue-700">{scores.match}</div>
+                <div className="flex items-center justify-center gap-1.5 mt-1">
+                  <span className="text-xs font-medium text-slate-700">Match</span>
+                  <span
+                    className="inline-flex h-4 w-4 items-center justify-center rounded-full bg-blue-200/80 text-blue-800 text-[10px] font-bold cursor-help"
+                    title="How well this trend aligns with your niche and keywords."
+                    aria-label="Match score description"
+                  >
+                    ?
+                  </span>
+                </div>
               </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-green-600">{scores.velocity}</div>
-                <div className="text-xs text-slate-600">Velocity</div>
+              <div className="rounded-xl border-2 border-emerald-200 bg-emerald-50/80 p-4 text-center shadow-sm">
+                <div className="text-2xl sm:text-3xl font-bold text-emerald-700">{scores.velocity}</div>
+                <div className="flex items-center justify-center gap-1.5 mt-1">
+                  <span className="text-xs font-medium text-slate-700">Velocity</span>
+                  <span
+                    className="inline-flex h-4 w-4 items-center justify-center rounded-full bg-emerald-200/80 text-emerald-800 text-[10px] font-bold cursor-help"
+                    title="Engagement momentum: views, likes, comments, and shares."
+                    aria-label="Velocity score description"
+                  >
+                    ?
+                  </span>
+                </div>
               </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-orange-600">{scores.replicability}</div>
-                <div className="text-xs text-slate-600">Replicability</div>
+              <div className="rounded-xl border-2 border-amber-200 bg-amber-50/80 p-4 text-center shadow-sm">
+                <div className="text-2xl sm:text-3xl font-bold text-amber-700">{scores.replicability}</div>
+                <div className="flex items-center justify-center gap-1.5 mt-1">
+                  <span className="text-xs font-medium text-slate-700">Replicability</span>
+                  <span
+                    className="inline-flex h-4 w-4 items-center justify-center rounded-full bg-amber-200/80 text-amber-800 text-[10px] font-bold cursor-help"
+                    title="How easy it is for you to replicate this trend (effort, no-face, format)."
+                    aria-label="Replicability score description"
+                  >
+                    ?
+                  </span>
+                </div>
               </div>
-              <div className="text-center bg-white rounded p-3">
+            </div>
+            <div className="flex justify-center">
+              <div className="rounded-xl border-2 border-slate-300 bg-slate-100 px-8 py-4 text-center shadow-sm min-w-[140px]">
                 <div className="text-3xl font-bold text-slate-800">{scores.final}</div>
-                <div className="text-xs text-slate-600">FINAL</div>
+                <div className="flex items-center justify-center gap-1.5 mt-1">
+                  <span className="text-xs font-semibold uppercase tracking-wide text-slate-600">Final</span>
+                  <span
+                    className="inline-flex h-4 w-4 items-center justify-center rounded-full bg-slate-300 text-slate-700 text-[10px] font-bold cursor-help"
+                    title="Combined score: 45% Match, 35% Velocity, 20% Replicability."
+                    aria-label="Final score description"
+                  >
+                    ?
+                  </span>
+                </div>
               </div>
             </div>
           </div>

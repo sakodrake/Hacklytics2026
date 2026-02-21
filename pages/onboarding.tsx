@@ -7,7 +7,7 @@ const syne = Syne({ subsets: ['latin'], weight: ['600', '700', '800'], display: 
 
 const NICHES = ['Tech', 'Fitness', 'Study', 'Fashion', 'Food']
 const EFFORT_LEVELS = ['low', 'med', 'high']
-const STYLES = ['educational', 'storytelling', 'memes', 'cinematic', 'talking-head']
+const STYLES = ['Educational', 'Storytelling', 'Memes', 'Cinematic', 'Talking-head']
 
 export default function Onboarding() {
   const [primaryNiche, setPrimaryNiche] = useState('Tech')
