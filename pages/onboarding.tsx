@@ -49,37 +49,59 @@ export default function Onboarding() {
     setError('')
     try {
       const primaryToSave = primaryNiche === 'Other' ? (customPrimary.trim() || '') : primaryNiche
-
-      const response = await fetch('/api/profile', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          primaryNiche: primaryToSave,
-          interests,
-          goals,
-          style: [style],
-          noFace,
-          effortLevel,
-          videoLength
-        })
-      })
-
-      if (!response.ok) {
-        const data = await response.json()
-        throw new Error(data.message || 'Failed to save profile')
+      const payload = {
+        primaryNiche: primaryToSave,
+        interests,
+        goals,
+        style: [style],
+        noFace,
+        effortLevel,
+        videoLength: Number(videoLength)
       }
 
-      const { profileId } = await response.json()
-      localStorage.setItem('trendspinoff_profileId', profileId)
+      // POST to recommendations API, store results in sessionStorage, then navigate
+      const recRes = await fetch('/api/recommendations', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      })
+
+      if (!recRes.ok) {
+        const ct = recRes.headers.get('content-type') || ''
+        let errText = ''
+        try {
+          if (ct.includes('application/json')) {
+            const data = await recRes.json()
+            errText = data?.message || JSON.stringify(data)
+          } else {
+            errText = await recRes.text()
+          }
+        } catch (e) {
+          errText = `HTTP ${recRes.status} ${recRes.statusText}`
+        }
+        throw new Error(errText || 'Failed to fetch recommendations')
+      }
+
+      // parse response as JSON, but guard against non-JSON bodies
+      let recData: any = null
+      try {
+        recData = await recRes.json()
+      } catch (e) {
+        const text = await recRes.text()
+        throw new Error(`Invalid JSON response from /api/recommendations: ${text}`)
+      }
+      sessionStorage.setItem('trendspinoff_recs', JSON.stringify(recData))
+      // also persist lightweight profile for future use
       localStorage.setItem('trendspinoff_profile', JSON.stringify({
         primaryNiche: primaryToSave,
         interests,
         goals,
         noFace,
         effortLevel,
-        videoLength
+        preferredLengthSeconds: Number(videoLength)
       }))
-      router.push('/feed')
+
+      router.push('/analysis')
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Error saving profile')
     } finally {
