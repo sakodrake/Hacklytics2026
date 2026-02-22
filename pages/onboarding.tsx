@@ -66,9 +66,20 @@ export default function Onboarding() {
         })
       })
 
-      if (!response.ok) {
-        const data = await response.json()
-        throw new Error(data.message || 'Failed to save profile')
+      if (!recRes.ok) {
+        const ct = recRes.headers.get('content-type') || ''
+        let errText = ''
+        try {
+          if (ct.includes('application/json')) {
+            const data = await recRes.json()
+            errText = data?.message || JSON.stringify(data)
+          } else {
+            errText = await recRes.text()
+          }
+        } catch (e) {
+          errText = `HTTP ${recRes.status} ${recRes.statusText}`
+        }
+        throw new Error(errText || 'Failed to fetch recommendations')
       }
 
       const { profileId } = await response.json()
@@ -78,9 +89,10 @@ export default function Onboarding() {
         interests,
         goals,
         effortLevel,
-        videoLength
+        preferredLengthSeconds: Number(videoLength)
       }))
-      router.push('/feed')
+
+      router.push('/analysis')
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Error saving profile')
     } finally {
