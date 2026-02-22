@@ -1,3 +1,4 @@
+
 import Link from 'next/link'
 import Head from 'next/head'
 import { Syne } from 'next/font/google'
@@ -8,7 +9,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>TrendSpinoff — TikTok trend analytics & spinoff ideas</title>
+        <title>Viralytics — TikTok trend analytics & spinoff ideas</title>
       </Head>
       <div className="landing min-h-screen flex flex-col items-center justify-center relative overflow-hidden px-6">
         {/* Video background */}
@@ -27,7 +28,7 @@ export default function Home() {
         {/* Center block: logo + CTA */}
         <div className="text-center max-w-xl mx-auto animate-fade-in">
           <h1 className={`${syne.className} text-5xl sm:text-6xl md:text-7xl font-bold tracking-tight text-white drop-shadow-lg`}>
-            TrendSpinoff
+            Viralytics
           </h1>
           <p className="mt-4 text-lg sm:text-xl text-white/90 font-medium">
             TikTok trend analytics + personalized spinoff ideas

@@ -1,14 +1,16 @@
+
 import { useState } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { Syne } from 'next/font/google'
+import { PreferredStyleSelector } from '../components/PreferredStyleSelector'
 
 const syne = Syne({ subsets: ['latin'], weight: ['600', '700', '800'], display: 'swap' })
 
 const NICHES = ['Tech', 'Fitness', 'Study', 'Fashion', 'Food']
 const EFFORT_LEVELS = ['low', 'med', 'high']
-const STYLES = ['Educational', 'Storytelling', 'Memes', 'Cinematic', 'Talking-head']
 
+const STYLES = ['Educational', 'Entertaining', 'Storytime', 'Hot Take', 'Tutorial', 'News', 'Faceless']
 
 export default function Onboarding() {
   const [primaryNiche, setPrimaryNiche] = useState('Tech')
@@ -17,12 +19,12 @@ export default function Onboarding() {
   const [newInterest, setNewInterest] = useState('')
   const [goals, setGoals] = useState<string[]>(['engagement'])
   const [style, setStyle] = useState(STYLES[0])
-  const [noFace, setNoFace] = useState(true)
   const [effortLevel, setEffortLevel] = useState('med')
   const [videoLength, setVideoLength] = useState('30')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const router = useRouter()
+
 
   function toggleInterest(n: string) {
     setInterests(prev => (prev.includes(n) ? prev.filter(x => x !== n) : [...prev, n]))
@@ -58,7 +60,7 @@ export default function Onboarding() {
           interests,
           goals,
           style: [style],
-          noFace,
+          // noFace state removed
           effortLevel,
           videoLength
         })
@@ -70,12 +72,11 @@ export default function Onboarding() {
       }
 
       const { profileId } = await response.json()
-      localStorage.setItem('trendspinoff_profileId', profileId)
-      localStorage.setItem('trendspinoff_profile', JSON.stringify({
+      localStorage.setItem('viralytics_profileId', profileId)
+      localStorage.setItem('viralytics_profile', JSON.stringify({
         primaryNiche: primaryToSave,
         interests,
         goals,
-        noFace,
         effortLevel,
         videoLength
       }))
@@ -87,179 +88,161 @@ export default function Onboarding() {
     }
   }
 
+
   return (
     <div className="min-h-screen relative overflow-hidden">
       <div className="app-bg absolute inset-0 -z-10" aria-hidden />
+      {/* Accent Glow */}
+      <div className="pointer-events-none absolute -top-24 left-1/2 h-72 w-72 -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(59,130,246,0.25)_0%,transparent_60%)] blur-2xl opacity-60 z-0" />
       <div className="relative min-h-screen p-6 flex flex-col items-center">
-        <div className="w-full max-w-2xl mx-auto">
-          <Link href="/" className="inline-flex items-center text-white/80 hover:text-white text-sm mb-8 transition-colors">
-            ← Back
-          </Link>
-
-          <div className="text-center mb-8 animate-fade-in">
-            <h1 className={`${syne.className} page-title text-4xl sm:text-5xl mb-2`}>
-              TrendSpinoff Setup
-            </h1>
-            <p className="page-subtitle text-lg">
-              Tell us your preferences so we can find trends that work for you
-            </p>
-          </div>
-
-          {error && (
-            <div className="app-card p-4 mb-6 border-l-4 border-red-500 text-red-800 text-sm">
-              {error}
-            </div>
-          )}
-
-          <div className="app-card p-6 sm:p-8 space-y-6 animate-fade-in">
-            <div>
-              <label className="label block mb-3">Primary Niche</label>
-              <div className="flex flex-wrap gap-2">
-                {NICHES.map(n => (
-                  <button
-                    key={n}
-                    onClick={() => { setPrimaryNiche(n); setCustomPrimary('') }}
-                    className={`px-4 py-2 rounded-xl font-medium transition ${
-                      primaryNiche === n
-                        ? 'bg-slate-800 text-white shadow'
-                        : 'bg-slate-200 text-slate-700 hover:bg-slate-300'
-                    }`}
-                  >
-                    {n}
-                  </button>
-                ))}
-
-                <button
-                  onClick={() => setPrimaryNiche('Other')}
-                  className={`px-4 py-2 rounded-xl font-medium transition ${
-                    primaryNiche === 'Other'
-                      ? 'bg-slate-800 text-white shadow'
-                      : 'bg-slate-200 text-slate-700 hover:bg-slate-300'
-                  }`}
-                >
-                  Other
-                </button>
+        <section className="relative mx-auto w-full max-w-2xl px-4 z-10 animate-fade-in">
+          <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 backdrop-blur-lg shadow-xl">
+            <div className="p-6 sm:p-10 space-y-6">
+              <Link href="/" className="inline-flex items-center text-white/80 hover:text-white text-sm mb-8 transition-colors">
+                ← Back
+              </Link>
+              <div className="text-center mb-8">
+                <h1 className={`${syne.className} page-title text-4xl sm:text-5xl mb-2`}>
+                  Viralytics Setup
+                </h1>
+                <p className="page-subtitle text-lg text-white">
+                  Tell us your preferences so we can find trends that work for you
+                </p>
+                <hr className="my-6 border-t border-white/30" />
               </div>
-
-              {primaryNiche === 'Other' && (
-                <div className="mt-3">
-                  <input
-                    type="text"
-                    value={customPrimary}
-                    onChange={e => setCustomPrimary(e.target.value)}
-                    placeholder="Enter your niche (e.g. 'SaaS', 'Parenting')"
-                    className="w-full p-3 bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-400 text-slate-800"
-                  />
+              {error && (
+                <div className="app-card p-4 mb-6 border-l-4 border-red-500 text-red-800 text-sm">
+                  {error}
                 </div>
               )}
-            </div>
-
-            <div>
-              <label className="label block mb-3">Interests (select all that apply)</label>
-              <div className="flex flex-wrap gap-2 mb-3">
-                {NICHES.map(n => (
+              <div>
+                <label className="label block mb-3 text-white text-lg font-semibold tracking-wide drop-shadow-sm" style={{fontFamily: 'Inter, Arial, sans-serif'}}>Primary Niche</label>
+                <div className="flex flex-wrap gap-2">
+                  {NICHES.map(n => (
+                    <button
+                      key={n}
+                      onClick={() => { setPrimaryNiche(n); setCustomPrimary('') }}
+                      className={`px-3 py-2 rounded-xl text-sm font-medium transition duration-200 border border-white/30
+                        ${primaryNiche === n
+                          ? 'bg-white text-slate-900 shadow-xl ring-2 ring-white/80 border-white'
+                          : 'bg-slate-800 text-white hover:bg-slate-700'}
+                        focus:outline-none focus:ring-2 focus:ring-white/70 focus:ring-offset-2`}
+                    >
+                      {n}
+                    </button>
+                  ))}
                   <button
-                    key={n}
-                    onClick={() => toggleInterest(n)}
-                    className={`px-3 py-2 rounded-xl text-sm font-medium transition ${
-                      interests.includes(n)
-                        ? 'bg-slate-700 text-white'
-                        : 'bg-slate-200 text-slate-700 hover:bg-slate-300'
-                    }`}
+                    onClick={() => setPrimaryNiche('Other')}
+                    className={`px-3 py-2 rounded-xl text-sm font-medium transition duration-200 border border-white/30
+                        ${primaryNiche === 'Other'
+                          ? 'bg-white text-slate-900 shadow-xl ring-2 ring-white/80 border-white'
+                          : 'bg-slate-800 text-white hover:bg-slate-700'}
+                        focus:outline-none focus:ring-2 focus:ring-white/70 focus:ring-offset-2`}
                   >
-                    {n}
+                    Other
                   </button>
-                ))}
-
-                {interests.filter(i => !NICHES.includes(i)).map(ci => (
-                  <button
-                    key={ci}
-                    onClick={() => toggleInterest(ci)}
-                    className="px-3 py-2 rounded-xl text-sm font-medium transition bg-slate-700 text-white"
-                  >
-                    {ci}
-                  </button>
-                ))}
+                </div>
+                {primaryNiche === 'Other' && (
+                  <div className="mt-3">
+                    <input
+                      type="text"
+                      value={customPrimary}
+                      onChange={e => setCustomPrimary(e.target.value)}
+                      placeholder="Enter your niche (e.g. 'SaaS', 'Parenting')"
+                      className="w-full p-3 bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-400 text-slate-800"
+                    />
+                  </div>
+                )}
               </div>
-
-              <div className="flex gap-2">
-                <input
-                  type="text"
-                  value={newInterest}
-                  onChange={e => setNewInterest(e.target.value)}
-                  onKeyDown={onInterestKey}
-                  placeholder="Add another interest and press Enter"
-                  className="flex-1 p-3 bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-400 text-slate-800"
-                />
-                <button
-                  onClick={addInterest}
-                  className="px-4 py-2 rounded-xl bg-slate-800 text-white"
+              <div>
+                <label className="label block mb-3 text-white text-lg font-semibold tracking-wide drop-shadow-sm" style={{fontFamily: 'Inter, Arial, sans-serif'}}>Interests (select all that apply)</label>
+                <div className="flex flex-wrap gap-2 mb-3">
+                  {NICHES.map(n => (
+                    <button
+                      key={n}
+                      onClick={() => toggleInterest(n)}
+                      className={`px-3 py-2 rounded-xl text-sm font-medium transition duration-200 border border-white/30
+                        ${interests.includes(n)
+                          ? 'bg-white text-slate-900 shadow-xl ring-2 ring-white/80 border-white'
+                          : 'bg-slate-800 text-white hover:bg-slate-700'}
+                        focus:outline-none focus:ring-2 focus:ring-white/70 focus:ring-offset-2`}
+                    >
+                      {n}
+                    </button>
+                  ))}
+                  {interests.filter(i => !NICHES.includes(i)).map(ci => (
+                    <button
+                      key={ci}
+                      onClick={() => toggleInterest(ci)}
+                      className="px-3 py-2 rounded-xl text-sm font-medium transition duration-200 border border-white/30 bg-white text-slate-900 shadow-xl ring-2 ring-white/80 border-white focus:outline-none focus:ring-2 focus:ring-white/70 focus:ring-offset-2"
+                    >
+                      {ci}
+                    </button>
+                  ))}
+                </div>
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    value={newInterest}
+                    onChange={e => setNewInterest(e.target.value)}
+                    onKeyDown={onInterestKey}
+                    placeholder="Anything else you're interested in?"
+                    className={`flex-1 p-3 bg-black/40 border border-slate-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-400 text-white backdrop-blur-sm ${!newInterest ? 'placeholder-white/70 focus:placeholder-white/10' : 'placeholder-transparent'}`}
+                    style={{fontFamily: 'Inter, Arial, sans-serif'}}
+                  />
+                  <button
+                    onClick={addInterest}
+                    className="px-4 py-2 rounded-xl bg-slate-800 text-white"
+                      style={{fontFamily: 'Inter, Arial, sans-serif'}}
+                  >
+                    Add
+                  </button>
+                </div>
+              </div>
+              <div>
+                <label className="label block mb-3 text-white text-lg font-semibold tracking-wide drop-shadow-sm" style={{fontFamily: 'Inter, Arial, sans-serif'}}>Preferred Style</label>
+                <div style={{fontFamily: 'Inter, Arial, sans-serif'}} className="flex items-center">
+                  <PreferredStyleSelector
+                    options={STYLES}
+                    value={style}
+                    onChange={setStyle}
+                  />
+                </div>
+              </div>
+              <div>
+                <label className="label block mb-3 text-white text-lg font-semibold tracking-wide drop-shadow-sm" style={{fontFamily: 'Inter, Arial, sans-serif'}}>Effort Level</label>
+                <select
+                  value={effortLevel}
+                  onChange={e => setEffortLevel(e.target.value)}
+                  className="w-full h-[40px] px-3 py-2 bg-slate-800 text-white border border-white/30 rounded-xl text-sm font-medium transition duration-200 focus:outline-none focus:ring-2 focus:ring-white/70 focus:ring-offset-2"
                 >
-                  Add
-                </button>
+                  <option value="low">Low (quick clips, minimal editing)</option>
+                  <option value="med">Medium (some editing, planning)</option>
+                  <option value="high">High (production-level content)</option>
+                </select>
               </div>
-            </div>
-
-            <div>
-              <label className="label block mb-3">Preferred Style</label>
-              <select
-                value={style}
-                onChange={e => setStyle(e.target.value)}
-                className="w-full p-3 bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-400 focus:border-transparent text-slate-800"
+              <div>
+                <label className="label block mb-3 text-white text-lg font-semibold tracking-wide drop-shadow-sm" style={{fontFamily: 'Inter, Arial, sans-serif'}}>
+                  Preferred Video Length (seconds)
+                </label>
+                <input
+                  type="number"
+                  value={videoLength}
+                  onChange={e => setVideoLength(e.target.value)}
+                  className="w-full h-[40px] px-3 py-2 bg-slate-800 text-white border border-white/30 rounded-xl text-sm font-medium transition duration-200 focus:outline-none focus:ring-2 focus:ring-white/70 focus:ring-offset-2"
+                />
+              </div>
+              <button
+                onClick={save}
+                disabled={loading}
+                style={{fontFamily: 'Montserrat, Inter, Arial, sans-serif'}}
+                className="mt-8 mx-auto w-[320px] max-w-full flex items-center justify-center px-8 py-5 text-2xl font-extrabold tracking-wide rounded-2xl transition-all duration-200 ease-out opacity-95 hover:opacity-100 hover:-translate-y-1 hover:shadow-2xl active:translate-y-0 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-400 focus-visible:ring-offset-2 bg-blue-500 text-white shadow-xl border border-white/40"
               >
-                {STYLES.map(s => (
-                  <option key={s} value={s}>{s}</option>
-                ))}
-              </select>
+                {loading ? 'Saving...' : 'Let’s Viralyze.'}
+              </button>
             </div>
-
-            <div className="flex items-center gap-3">
-              <input
-                type="checkbox"
-                id="noFace"
-                checked={noFace}
-                onChange={e => setNoFace(e.target.checked)}
-                className="w-5 h-5 rounded border-slate-300 text-slate-700 focus:ring-slate-500"
-              />
-              <label htmlFor="noFace" className="label">
-                Prefer videos without showing my face
-              </label>
-            </div>
-
-            <div>
-              <label className="label block mb-3">Effort Level</label>
-              <select
-                value={effortLevel}
-                onChange={e => setEffortLevel(e.target.value)}
-                className="w-full p-3 bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-400 focus:border-transparent text-slate-800"
-              >
-                <option value="low">Low (quick clips, minimal editing)</option>
-                <option value="med">Medium (some editing, planning)</option>
-                <option value="high">High (production-level content)</option>
-              </select>
-            </div>
-
-            <div>
-              <label className="label block mb-3">
-                Preferred Video Length (seconds)
-              </label>
-              <input
-                type="number"
-                value={videoLength}
-                onChange={e => setVideoLength(e.target.value)}
-                className="w-full p-3 bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-400 text-slate-800"
-              />
-            </div>
-
-            <button
-              onClick={save}
-              disabled={loading}
-              className="btn-primary w-full px-6 py-4 text-lg"
-            >
-              {loading ? 'Saving...' : 'Save & Start Finding Trends'}
-            </button>
           </div>
-        </div>
+        </section>
       </div>
     </div>
   )
