@@ -64,7 +64,7 @@ Focus on relevant content for this ${niche} niche. Ensure keywords are lowercase
       const { GoogleGenerativeAI } = await import('@google/generative-ai');
       const client = new GoogleGenerativeAI(process.env.GEMINI_API_KEY as string);
       // allow overriding model via env; otherwise let SDK pick sensible default
-      const modelName = process.env.GEMINI_MODEL || 'gemini-1.0';
+      const modelName = process.env.GEMINI_MODEL || 'gemini-2.5-flash';
       const model = client.getGenerativeModel({ model: modelName });
 
       const result = await model.generateContent(prompt as any);

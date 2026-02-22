@@ -3,156 +3,672 @@
     "video_url": "https://www.tiktok.com/@jhonnyacarreromora/video/7585928722956569886?is_from_webapp=1&sender_device=pc&web_id=7609424832660735502",
     "topic": "Food",
     "niche": "Comedy",
-    "hashtags": "#hallacas",
+    "hashtags": [
+      "hallacas"
+    ],
     "video_style": "Memes",
-    "video_length_seconds": "6",
-    "views": "30000000",
-    "likes": "3900000",
-    "comments": "25570",
+    "video_length_seconds": 6,
+    "views": 30000000.0,
+    "likes": 3900000.0,
+    "comments": 25570.0,
     "hook_text": "Preparando el guiso para las hallacas Mi Nieta"
   },
   {
     "video_url": "https://www.tiktok.com/@jordan_the_stallion8/video/7582367053391105311?is_from_webapp=1&sender_device=pc&web_id=7609424832660735502",
     "topic": "Food",
     "niche": "Comedy",
-    "hashtags": "#fyp",
+    "hashtags": [
+      "fyp"
+    ],
     "video_style": "Memes",
-    "video_length_seconds": "38",
-    "views": "100200000",
-    "likes": "8400000",
-    "comments": "23500",
+    "video_length_seconds": 38,
+    "views": 100200000.0,
+    "likes": 8400000.0,
+    "comments": 23500.0,
     "hook_text": "sushi"
   },
   {
     "video_url": "https://www.tiktok.com/@leafchunch30days/video/7577580934644501815?is_from_webapp=1&sender_device=pc&web_id=7609462844480865806",
     "topic": "Fashion",
     "niche": "Comedy",
-    "hashtags": "#leafcrunch",
+    "hashtags": [
+      "leafcrunch"
+    ],
     "video_style": "Memes",
-    "video_length_seconds": "10",
-    "views": "122000000",
-    "likes": "15000000",
-    "comments": "55000",
+    "video_length_seconds": 10,
+    "views": 122000000.0,
+    "likes": 15000000.0,
+    "comments": 55000.0,
     "hook_text": "day 8 of finding the crunchiest leaf"
   },
   {
     "video_url": "https://www.tiktok.com/@maylani_yvonne/video/7587970131574213919?is_from_webapp=1&sender_device=pc&web_id=7609462844480865806",
     "topic": "Fashion",
     "niche": "Comedy",
-    "hashtags": "#christmas",
+    "hashtags": [
+      "christmas"
+    ],
     "video_style": "Memes",
-    "video_length_seconds": "14",
-    "views": "59400000",
-    "likes": "14600000",
-    "comments": "14400",
+    "video_length_seconds": 14,
+    "views": 59400000.0,
+    "likes": 14600000.0,
+    "comments": 14400.0,
     "hook_text": "christmas gift gone wrong"
   },
   {
     "video_url": "https://www.tiktok.com/@fabio.farati/video/7584914108047183118?is_from_webapp=1&sender_device=pc&web_id=7609462844480865806",
     "topic": "Fashion",
     "niche": "Culture",
-    "hashtags": "#fabio",
+    "hashtags": [
+      "fabio"
+    ],
     "video_style": "Story Telling",
-    "video_length_seconds": "57",
-    "views": "100000000",
-    "likes": "3000000",
-    "comments": "21000",
+    "video_length_seconds": 57,
+    "views": 100000000.0,
+    "likes": 3000000.0,
+    "comments": 21000.0,
     "hook_text": "Italian explains how to dress for the occasion"
   },
   {
-    "video_url": "https://www.tiktok.com/@rodnsam/video/7573747765411335455?is_from_webapp=1&sender_device=pc&web_id=7609424832660735502",
+    "video_url": "https://www.tiktok.com/@rodnsam/video/7573747765411335455?is_from_webapp=1&sender_device=pc&web_id=7609424832660735502 ",
     "topic": "Food",
     "niche": "Comedy",
-    "hashtags": "#fyp",
+    "hashtags": [
+      "fyp"
+    ],
     "video_style": "Memes",
-    "video_length_seconds": "10",
-    "views": "79800000",
-    "likes": "8800000",
-    "comments": "14700",
+    "video_length_seconds": 10,
+    "views": 79800000.0,
+    "likes": 8800000.0,
+    "comments": 14700.0,
     "hook_text": "Fruit Hack"
   },
   {
-    "video_url": "https://www.tiktok.com/@mukultbuzy1/video/7583909718230437134?is_from_webapp=1&sender_device=pc&web_id=7609424832660735502",
+    "video_url": "https://www.tiktok.com/@mukultbuzy1/video/7583909718230437134?is_from_webapp=1&sender_device=pc&web_id=7609424832660735502 ",
     "topic": "Food",
     "niche": "Culture",
-    "hashtags": "#fyp",
+    "hashtags": [
+      "fyp"
+    ],
     "video_style": "Educational",
-    "video_length_seconds": "35",
-    "views": "20000000",
-    "likes": "1900000",
-    "comments": "5250",
+    "video_length_seconds": 35,
+    "views": 20000000.0,
+    "likes": 1900000.0,
+    "comments": 5250.0,
     "hook_text": "Try this:"
   },
   {
     "video_url": "https://www.tiktok.com/@therealunicornsprkles/video/7576184468906560799?is_from_webapp=1&sender_device=pc&web_id=7609462844480865806",
     "topic": "Fashion",
     "niche": "Comedy",
-    "hashtags": "#boots",
+    "hashtags": [
+      "boots"
+    ],
     "video_style": "Memes",
-    "video_length_seconds": "10",
-    "views": "46000000",
-    "likes": "4200000",
-    "comments": "8000",
+    "video_length_seconds": 10,
+    "views": 46000000.0,
+    "likes": 4200000.0,
+    "comments": 8000.0,
     "hook_text": "Every night at dinner, I'll be there"
   },
   {
     "video_url": "https://www.tiktok.com/@realjayllnn/video/7586823045105372430?is_from_webapp=1&sender_device=pc&web_id=7609424832660735502",
     "topic": "Food",
     "niche": "Comedy",
-    "hashtags": "#fyp",
+    "hashtags": [
+      "fyp"
+    ],
     "video_style": "Story Telling",
-    "video_length_seconds": "76",
-    "views": "77200000",
-    "likes": "2300000",
-    "comments": "11200",
+    "video_length_seconds": 76,
+    "views": 77200000.0,
+    "likes": 2300000.0,
+    "comments": 11200.0,
     "hook_text": "Seafood Rock Paper Scissors"
   },
   {
     "video_url": "https://www.tiktok.com/@brookemonk_/video/7590129793002163487?is_from_webapp=1&sender_device=pc&web_id=7609462844480865806",
     "topic": "Fashion",
     "niche": "Couple",
-    "hashtags": "#fyp",
+    "hashtags": [
+      "fyp"
+    ],
     "video_style": "Story Telling",
-    "video_length_seconds": "29",
-    "views": "44400000",
-    "likes": "2100000",
-    "comments": "10000",
+    "video_length_seconds": 29,
+    "views": 44400000.0,
+    "likes": 2100000.0,
+    "comments": 10000.0,
     "hook_text": "Your sign to make forever hug shirts to remember 2025"
   },
   {
-    "video_url": "https://www.tiktok.com/@jeshastevens/video/7585371551092985118?is_from_webapp=1&sender_device=pc&web_id=7609424832660735502",
+    "video_url": "https://www.tiktok.com/@jeshastevens/video/7585371551092985118?is_from_webapp=1&sender_device=pc&web_id=7609424832660735502 ",
     "topic": "Food",
     "niche": "Baking",
-    "hashtags": "#baking",
+    "hashtags": [
+      "baking"
+    ],
     "video_style": "Story Telling",
-    "video_length_seconds": "32",
-    "views": "67100000",
-    "likes": "3900000",
-    "comments": "12900",
+    "video_length_seconds": 32,
+    "views": 67100000.0,
+    "likes": 3900000.0,
+    "comments": 12900.0,
     "hook_text": "Glitter bagels AND homemade vanilla cream cheese"
   },
   {
     "video_url": "https://www.tiktok.com/@wheatculture/video/7594530157705170231?is_from_webapp=1&sender_device=pc&web_id=7609424832660735502",
     "topic": "Food",
     "niche": "Baking",
-    "hashtags": "#sourdough",
+    "hashtags": [
+      "sourdough"
+    ],
     "video_style": "Memes",
-    "video_length_seconds": "18",
-    "views": "74100000",
-    "likes": "3000000",
-    "comments": "21600",
+    "video_length_seconds": 18,
+    "views": 74100000.0,
+    "likes": 3000000.0,
+    "comments": 21600.0,
     "hook_text": "Proof that sourdough starter is alive"
   },
   {
     "video_url": "https://www.tiktok.com/@hadzabe.chaba2/video/7593560911030291725?is_from_webapp=1&sender_device=pc&web_id=7609424832660735502",
     "topic": "Food",
     "niche": "Culture",
-    "hashtags": "#village",
+    "hashtags": [
+      "village"
+    ],
     "video_style": "Story Telling",
-    "video_length_seconds": "14",
-    "views": "67800000",
-    "likes": "654300",
-    "comments": "6128",
+    "video_length_seconds": 14,
+    "views": 67800000.0,
+    "likes": 654300.0,
+    "comments": 6128.0,
     "hook_text": "Hazabe Tribe"
+  },
+  {
+    "video_url": "https://www.tiktok.com/@user7294728293927284/video/7605801735524764959?is_from_webapp=1&sender_device=pc&web_id=7521574184402257422",
+    "topic": "Shopping",
+    "niche": "Fashion",
+    "hashtags": [
+      "matchingoutfit"
+    ],
+    "video_style": "Memes",
+    "video_length_seconds": 8,
+    "views": 36100000.0,
+    "likes": 7400000.0,
+    "comments": 23600.0,
+    "hook_text": "valentines day matching outfit"
+  },
+  {
+    "video_url": "https://www.tiktok.com/@alleyes_fashion/video/7577602034522754335?is_from_webapp=1&sender_device=pc&web_id=7521574184402257422",
+    "topic": "Modeling",
+    "niche": "Fashion",
+    "hashtags": [
+      "beautiful"
+    ],
+    "video_style": "Cinematic",
+    "video_length_seconds": 64,
+    "views": 3700000.0,
+    "likes": 32000.0,
+    "comments": 3600.0,
+    "hook_text": "if you want to see if a designer respects women..."
+  },
+  {
+    "video_url": "https://www.tiktok.com/@kalitaku/video/7603418965544717599?is_from_webapp=1&sender_device=pc&web_id=7521574184402257422",
+    "topic": "DIY",
+    "niche": "Fashion",
+    "hashtags": [
+      "fashion"
+    ],
+    "video_style": "Story Telling",
+    "video_length_seconds": 84,
+    "views": 30700000.0,
+    "likes": 3700000.0,
+    "comments": 5967.0,
+    "hook_text": "Day 4 of making a birthday cake dress"
+  },
+  {
+    "video_url": "https://www.tiktok.com/@vu.xuan.diem/video/7578786881471647007?is_from_webapp=1&sender_device=pc&web_id=7521574184402257422",
+    "topic": "Brand",
+    "niche": "Fashion",
+    "hashtags": [
+      "schiaparelli"
+    ],
+    "video_style": "Cinematic",
+    "video_length_seconds": 68,
+    "views": 28900000.0,
+    "likes": 385000.0,
+    "comments": 14100.0,
+    "hook_text": "paris fashion week!"
+  },
+  {
+    "video_url": "https://www.tiktok.com/@akintwins/video/7573508270049021197?is_from_webapp=1&sender_device=pc&web_id=7521574184402257422",
+    "topic": "Brand",
+    "niche": "Fashion",
+    "hashtags": [
+      "quarterzip"
+    ],
+    "video_style": "Memes",
+    "video_length_seconds": 11,
+    "views": 28300000.0,
+    "likes": 3500000.0,
+    "comments": 22500.0,
+    "hook_text": "everyone tag ralph lauren performative"
+  },
+  {
+    "video_url": "https://www.tiktok.com/@thenoughtiesedit/video/7586792752415886622?is_from_webapp=1&sender_device=pc&web_id=7521574184402257422",
+    "topic": "Shopping",
+    "niche": "Fashion",
+    "hashtags": [
+      "thrift"
+    ],
+    "video_style": "Story Telling",
+    "video_length_seconds": 78,
+    "views": 2600000.0,
+    "likes": 1300000.0,
+    "comments": 1326.0,
+    "hook_text": "back again!!! will we slay this time?"
+  },
+  {
+    "video_url": "https://www.tiktok.com/@sowistery/video/7598401601161776414?is_from_webapp=1&sender_device=pc&web_id=7521574184402257422",
+    "topic": "Study",
+    "niche": "Education",
+    "hashtags": [
+      "studywithme"
+    ],
+    "video_style": "Educational",
+    "video_length_seconds": 15,
+    "views": 367000.0,
+    "likes": 90200.0,
+    "comments": 237.0,
+    "hook_text": "your sign to study like rn"
+  },
+  {
+    "video_url": "https://www.tiktok.com/@tegaontop/video/7607445698140802317?is_from_webapp=1&sender_device=pc&web_id=7521574184402257422",
+    "topic": "Study",
+    "niche": "Comedy",
+    "hashtags": [
+      "relatable"
+    ],
+    "video_style": "Memes",
+    "video_length_seconds": 7,
+    "views": 4400000.0,
+    "likes": 1000000.0,
+    "comments": 960.0,
+    "hook_text": "In a world full of people who wait till last minute to study"
+  },
+  {
+    "video_url": "https://www.tiktok.com/@ruouye/video/7604863833357798670?is_from_webapp=1&sender_device=pc&web_id=7521574184402257422",
+    "topic": "Study",
+    "niche": "Storytelling",
+    "hashtags": [
+      "studywithme"
+    ],
+    "video_style": "Educational",
+    "video_length_seconds": 13,
+    "views": 75900.0,
+    "likes": 21000.0,
+    "comments": 65.0,
+    "hook_text": "study vlog!"
+  },
+  {
+    "video_url": "https://www.tiktok.com/@kamilasecret777/video/7606210851225324813?is_from_webapp=1&sender_device=pc&web_id=7521574184402257422",
+    "topic": "Study",
+    "niche": "Storytelling",
+    "hashtags": [
+      "studyinspo"
+    ],
+    "video_style": "Educational",
+    "video_length_seconds": 9,
+    "views": 658000.0,
+    "likes": 172000.0,
+    "comments": 98.0,
+    "hook_text": "The beauty of studying is that u get to control the outcome"
+  },
+  {
+    "video_url": "https://www.tiktok.com/@livelaughlavenderr/video/7608053129816444174?is_from_webapp=1&sender_device=pc&web_id=7521574184402257422",
+    "topic": "Study",
+    "niche": "Aesthetic",
+    "hashtags": [
+      "studywithme"
+    ],
+    "video_style": "Educational",
+    "video_length_seconds": 67,
+    "views": 86100.0,
+    "likes": 26900.0,
+    "comments": 90.0,
+    "hook_text": "college vlog study days"
+  },
+  {
+    "video_url": "https://www.tiktok.com/@track.nineteen/video/7607232660347342102?is_from_webapp=1&sender_device=pc&web_id=7521574184402257422",
+    "topic": "Study",
+    "niche": "Aesthetic",
+    "hashtags": [
+      "smartgirl"
+    ],
+    "video_style": "Educational",
+    "video_length_seconds": 7,
+    "views": 2600000.0,
+    "likes": 404000.0,
+    "comments": 267.0,
+    "hook_text": "hot girls study hard"
+  },
+  {
+    "video_url": "https://www.tiktok.com/@ilytqkki/video/7602363837777480990?is_from_webapp=1&sender_device=pc&web_id=7521574184402257422",
+    "topic": "Study",
+    "niche": "Storytelling",
+    "hashtags": [
+      "dayinmylife"
+    ],
+    "video_style": "Educational",
+    "video_length_seconds": 40,
+    "views": 20700.0,
+    "likes": 4856.0,
+    "comments": 28.0,
+    "hook_text": "productive diml (day in my life) at columbia"
+  },
+  {
+    "video_url": "https://www.tiktok.com/@pauline_heidy/video/7413518168406166827?is_from_webapp=1&sender_device=pc&web_id=7521574184402257422",
+    "topic": "Fitness",
+    "niche": "Fitness",
+    "hashtags": [
+      "planetfitness"
+    ],
+    "video_style": "Memes",
+    "video_length_seconds": 7,
+    "views": 13000000.0,
+    "likes": 1400000.0,
+    "comments": 9759.0,
+    "hook_text": "planet fitness really is another planet"
+  },
+  {
+    "video_url": "https://www.tiktok.com/@savannahpesante/video/7358494319910833454?is_from_webapp=1&sender_device=pc&web_id=7521574184402257422",
+    "topic": "Fitness",
+    "niche": "Fitness",
+    "hashtags": [
+      "workout"
+    ],
+    "video_style": "Educational",
+    "video_length_seconds": 47,
+    "views": 4300000.0,
+    "likes": 365000.0,
+    "comments": 465.0,
+    "hook_text": "full body workout, gym fit"
+  },
+  {
+    "video_url": "https://www.tiktok.com/@jessicabickling/video/7417217558299938078?is_from_webapp=1&sender_device=pc&web_id=7521574184402257422",
+    "topic": "Fitness",
+    "niche": "Fitness",
+    "hashtags": [
+      "workout"
+    ],
+    "video_style": "Educational",
+    "video_length_seconds": 51,
+    "views": 3200000.0,
+    "likes": 360000.0,
+    "comments": 904.0,
+    "hook_text": "love a upper body day, full fit"
+  },
+  {
+    "video_url": "https://www.tiktok.com/@sandsxfitness/video/7300303337583414561?is_from_webapp=1&sender_device=pc&web_id=7521574184402257422",
+    "topic": "Fitness",
+    "niche": "Fitness",
+    "hashtags": [
+      "coreworkout"
+    ],
+    "video_style": "Educational",
+    "video_length_seconds": 24,
+    "views": 31800000.0,
+    "likes": 3000000.0,
+    "comments": 5587.0,
+    "hook_text": "killer core circuit"
+  },
+  {
+    "video_url": "https://www.tiktok.com/@higherupwellness/video/7430959638163508523?is_from_webapp=1&sender_device=pc&web_id=7521574184402257422",
+    "topic": "Fitness",
+    "niche": "Fitness",
+    "hashtags": [
+      "wellness"
+    ],
+    "video_style": "Educational",
+    "video_length_seconds": 120,
+    "views": 1100000.0,
+    "likes": 159000.0,
+    "comments": 879.0,
+    "hook_text": "how to get healthy and fit beginners edition"
+  },
+  {
+    "video_url": "https://www.tiktok.com/@raahavyy/video/7396649241122245920?is_from_webapp=1&sender_device=pc&web_id=7521574184402257422",
+    "topic": "Fitness",
+    "niche": "Fitness",
+    "hashtags": [
+      "beginner"
+    ],
+    "video_style": "Educational",
+    "video_length_seconds": 41,
+    "views": 6900000.0,
+    "likes": 549000.0,
+    "comments": 2282.0,
+    "hook_text": "how to get your first pushup!!"
+  },
+  {
+    "video_url": "https://www.tiktok.com/@spigen/video/7602440652445502750?is_from_webapp=1&sender_device=pc&web_id=7521574184402257422",
+    "topic": "Tech",
+    "niche": "Tech",
+    "hashtags": [
+      "retro"
+    ],
+    "video_style": "Educational",
+    "video_length_seconds": 29,
+    "views": 145000.0,
+    "likes": 13300.0,
+    "comments": 201.0,
+    "hook_text": "good news if you like transparent tech"
+  },
+  {
+    "video_url": "https://www.tiktok.com/@esmaadiaryy/video/7557418828272078102?is_from_webapp=1&sender_device=pc&web_id=7521574184402257422",
+    "topic": "Tech",
+    "niche": "Tech",
+    "hashtags": [
+      "oldtech"
+    ],
+    "video_style": "Aesthetic",
+    "video_length_seconds": 14,
+    "views": 203000.0,
+    "likes": 37500.0,
+    "comments": 64.0,
+    "hook_text": "my useless tech i use daily"
+  },
+  {
+    "video_url": "https://www.tiktok.com/@y2ktech_/video/7520306886122556685?is_from_webapp=1&sender_device=pc&web_id=7521574184402257422",
+    "topic": "Tech",
+    "niche": "Tech",
+    "hashtags": [
+      "technostalgia"
+    ],
+    "video_style": "Aesthetic",
+    "video_length_seconds": 8,
+    "views": 855000.0,
+    "likes": 163000.0,
+    "comments": 684.0,
+    "hook_text": "some of my cool stuff ive been collecting over few years"
+  },
+  {
+    "video_url": "https://www.tiktok.com/@sagecadence_/video/7598850423402892575?is_from_webapp=1&sender_device=pc&web_id=7521574184402257422",
+    "topic": "Tech",
+    "niche": "Tech",
+    "hashtags": [
+      "tech"
+    ],
+    "video_style": "Educational",
+    "video_length_seconds": 65,
+    "views": 20100.0,
+    "likes": 2408.0,
+    "comments": 11.0,
+    "hook_text": "decoding tech hardware, how do i get faster internet"
+  },
+  {
+    "video_url": "https://www.tiktok.com/@thespenceryan/video/7589705710628310286?is_from_webapp=1&sender_device=pc&web_id=7521574184402257422",
+    "topic": "Tech",
+    "niche": "Tech",
+    "hashtags": [
+      "techtok"
+    ],
+    "video_style": "Educational",
+    "video_length_seconds": 90,
+    "views": 350000.0,
+    "likes": 28600.0,
+    "comments": 51.0,
+    "hook_text": "my 5 favorite tech items"
+  },
+  {
+    "video_url": "https://www.tiktok.com/@gazi.ai/video/7572222273843629329?is_from_webapp=1&sender_device=pc&web_id=7521574184402257422",
+    "topic": "Tech",
+    "niche": "Tech",
+    "hashtags": [
+      "bigtech"
+    ],
+    "video_style": "Educational",
+    "video_length_seconds": 60,
+    "views": 239000.0,
+    "likes": 31500.0,
+    "comments": 108.0,
+    "hook_text": "reality of tech"
+  },
+  {
+    "video_url": "https://www.tiktok.com/@pikacodes/video/7514446280291093778?is_from_webapp=1&sender_device=pc&web_id=7521574184402257422",
+    "topic": "Tech",
+    "niche": "Tech",
+    "hashtags": [
+      "programming"
+    ],
+    "video_style": "Educational",
+    "video_length_seconds": 48,
+    "views": 13000000.0,
+    "likes": 1100000.0,
+    "comments": 2700.0,
+    "hook_text": "pov:  youre a programmer in nyc"
+  },
+  {
+    "video_url": "https://www.tiktok.com/@musicnico0/video/7603793981859777814?is_from_webapp=1&sender_device=pc&web_id=7521574184402257422",
+    "topic": "Music",
+    "niche": "Music",
+    "hashtags": [
+      "rockmusic"
+    ],
+    "video_style": "Aesthetic",
+    "video_length_seconds": 26,
+    "views": 323000000.0,
+    "likes": 75000.0,
+    "comments": 165.0,
+    "hook_text": "music is life. under pressure david bowie"
+  },
+  {
+    "video_url": "https://www.tiktok.com/@v4lk00re/video/7605451670906227989?is_from_webapp=1&sender_device=pc&web_id=7521574184402257422",
+    "topic": "Music",
+    "niche": "Music",
+    "hashtags": [
+      "britpop"
+    ],
+    "video_style": "Aesthetic",
+    "video_length_seconds": 14,
+    "views": 1100000.0,
+    "likes": 275000.0,
+    "comments": 647.0,
+    "hook_text": "britpop the strokes the clash the cure rolling stones radiohead"
+  },
+  {
+    "video_url": "https://www.tiktok.com/@allsrckw/video/7598543430729387271?is_from_webapp=1&sender_device=pc&web_id=7521574184402257422",
+    "topic": "Music",
+    "niche": "Music",
+    "hashtags": [
+      "lyrics"
+    ],
+    "video_style": "Aesthetic",
+    "video_length_seconds": 49,
+    "views": 796000.0,
+    "likes": 143000.0,
+    "comments": 181.0,
+    "hook_text": "my moon my man"
+  },
+  {
+    "video_url": "https://www.tiktok.com/@ikrysten/video/7600847182656179477?is_from_webapp=1&sender_device=pc&web_id=7521574184402257422",
+    "topic": "Music",
+    "niche": "Music",
+    "hashtags": [
+      "musiclover"
+    ],
+    "video_style": "Aesthetic",
+    "video_length_seconds": 13,
+    "views": 138000.0,
+    "likes": 26100.0,
+    "comments": 15.0,
+    "hook_text": "music is my therapy"
+  },
+  {
+    "video_url": "https://www.tiktok.com/@sedasted/video/7605588633638145287?is_from_webapp=1&sender_device=pc&web_id=7521574184402257422",
+    "topic": "Music ",
+    "niche": "Music",
+    "hashtags": [
+      "albumcover"
+    ],
+    "video_style": "Aesthetic",
+    "video_length_seconds": 19,
+    "views": 367000.0,
+    "likes": 85200.0,
+    "comments": 607.0,
+    "hook_text": "luv me like i luv music"
+  },
+  {
+    "video_url": "https://www.tiktok.com/@soulenedit/video/7605684597979909398?is_from_webapp=1&sender_device=pc&web_id=7521574184402257422",
+    "topic": "Music",
+    "niche": "Music",
+    "hashtags": [
+      "core"
+    ],
+    "video_style": "Aesthetic",
+    "video_length_seconds": 18,
+    "views": 1600000.0,
+    "likes": 370000.0,
+    "comments": 206.0,
+    "hook_text": "music connects us all"
+  },
+  {
+    "video_url": "https://www.tiktok.com/@thelyrbook/video/7605681012537904391?is_from_webapp=1&sender_device=pc&web_id=7521574184402257422",
+    "topic": "Music",
+    "niche": "Music",
+    "hashtags": [
+      "thecure"
+    ],
+    "video_style": "Aesthetic",
+    "video_length_seconds": 38,
+    "views": 44400.0,
+    "likes": 5613.0,
+    "comments": 11.0,
+    "hook_text": "just like heaven by the cure"
+  },
+  {
+    "video_url": "https://www.tiktok.com/@kvnramirezz/video/7239214407425838342?is_from_webapp=1&sender_device=pc&web_id=7521574184402257422",
+    "topic": "Fitness",
+    "niche": "Fitness",
+    "hashtags": [
+      "fitness"
+    ],
+    "video_style": "Storytelling",
+    "video_length_seconds": 16,
+    "views": 7300000.0,
+    "likes": 818000.0,
+    "comments": 1913.0,
+    "hook_text": "gym motivation, you can, you will"
+  },
+  {
+    "video_url": "https://www.tiktok.com/@adoressdove/video/7603473815817080086?is_from_webapp=1&sender_device=pc&web_id=7521574184402257422",
+    "topic": "Music",
+    "niche": "Music",
+    "hashtags": [
+      "banger"
+    ],
+    "video_style": "Storytelling",
+    "video_length_seconds": 18,
+    "views": 145000.0,
+    "likes": 20200.0,
+    "comments": 13.0,
+    "hook_text": "such a good song young hearts run free"
   }
 ]

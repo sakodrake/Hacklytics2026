@@ -9,8 +9,7 @@ const syne = Syne({ subsets: ['latin'], weight: ['600', '700', '800'], display: 
 
 const NICHES = ['Tech', 'Fitness', 'Study', 'Fashion', 'Food']
 const EFFORT_LEVELS = ['low', 'med', 'high']
-
-const STYLES = ['Educational', 'Entertaining', 'Storytime', 'Hot Take', 'Tutorial', 'News', 'Faceless']
+const STYLES = ['Educational', 'Entertaining', 'Storytelling', 'Memes', 'Cinematic', 'Faceless']
 
 export default function Onboarding() {
   const [primaryNiche, setPrimaryNiche] = useState('Tech')
@@ -51,19 +50,20 @@ export default function Onboarding() {
     setError('')
     try {
       const primaryToSave = primaryNiche === 'Other' ? (customPrimary.trim() || '') : primaryNiche
+      const payload = {
+        primaryNiche: primaryToSave,
+        interests,
+        goals,
+        style: [style],
+        effortLevel,
+        videoLength: Number(videoLength)
+      }
 
-      const response = await fetch('/api/profile', {
+      // POST to recommendations API, store results in sessionStorage, then navigate
+      const recRes = await fetch('/api/recommendations', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          primaryNiche: primaryToSave,
-          interests,
-          goals,
-          style: [style],
-          // noFace state removed
-          effortLevel,
-          videoLength
-        })
+        body: JSON.stringify(payload)
       })
 
       if (!recRes.ok) {
@@ -82,9 +82,17 @@ export default function Onboarding() {
         throw new Error(errText || 'Failed to fetch recommendations')
       }
 
-      const { profileId } = await response.json()
-      localStorage.setItem('viralytics_profileId', profileId)
-      localStorage.setItem('viralytics_profile', JSON.stringify({
+      // parse response as JSON, but guard against non-JSON bodies
+      let recData: any = null
+      try {
+        recData = await recRes.json()
+      } catch (e) {
+        const text = await recRes.text()
+        throw new Error(`Invalid JSON response from /api/recommendations: ${text}`)
+      }
+      sessionStorage.setItem('trendspinoff_recs', JSON.stringify(recData))
+      // also persist lightweight profile for future use
+      localStorage.setItem('trendspinoff_profile', JSON.stringify({
         primaryNiche: primaryToSave,
         interests,
         goals,
@@ -191,6 +199,7 @@ export default function Onboarding() {
                       {ci}
                     </button>
                   ))}
+
                 </div>
                 <div className="flex gap-2">
                   <input

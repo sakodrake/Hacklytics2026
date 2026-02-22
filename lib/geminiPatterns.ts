@@ -38,7 +38,7 @@ export async function extractPatternsWithGemini(params: {
   const { GoogleGenerativeAI } = await import("@google/generative-ai");
 
   const genAI = new GoogleGenerativeAI(geminiApiKey);
-  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+  const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
   // Keep prompt short + structured for hackathon reliability.
   const compact = videos.slice(0, 10).map(v => ({

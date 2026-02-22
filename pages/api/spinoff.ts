@@ -74,7 +74,7 @@ async function generateSpinoffsWithGemini(
   if (!apiKey) throw new Error("GEMINI_API_KEY not set");
 
   const client = new GoogleGenerativeAI(apiKey);
-  const model = client.getGenerativeModel({ model: "gemini-1.5-flash" });
+  const model = client.getGenerativeModel({ model: "gemini-2.5-flash" });
 
   const tagList = normalizeHashtags(trend.hashtags);
 
